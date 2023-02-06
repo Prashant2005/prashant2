@@ -1,3319 +1,747 @@
-<html lang="en" class="no-js">
-    
-     
-<style>#preLoad{            
-    width:100%;
-    height:100%;
-    background:#FFF;
-    position:absolute;
-    top:0;    
-}        
+<!DOCTYPE html>
 
-#preLoad div{
-    position:absolute;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Create a Quiz App With Timer Using </title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAweome CDN Link for Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <style>/* importing google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    background: #007bff;
+}
+
+::selection{
+    color: #fff;
+    background: #007bff;
+}
+
+.start_btn,
+.info_box,
+.quiz_box,
+.result_box{
+    position: absolute;
     top: 50%;
     left: 50%;
-    height:60px;
-    margin-top: -30px;
-    margin-left: -24px;
-}
-.header-color {
-  /* mixin  */
-  color: #252525;
-}
-h1 {
-  /* mixin  */
-  color: #252525;
-  font-size: 22pt;
-  line-height: 21px;
-}
-h2 {
-  /* mixin  */
-  color: #252525;
-  font-size: 16pt;
-  line-height: 1.5;
-}
-button:focus {
-  outline: 0;
-}
-.basic-panel {
-  /* mixin  */
-  width: 610px;
-  min-height: 400px;
-  position: relative;
-}
-#slider-frame {
-  /* mixin  */
-  width: 610px;
-  min-height: 400px;
-  position: relative;
-  margin: 0 auto;
-  /*overflow: hidden;*/
-}
-#slider {
-  min-height: 400px;
-  list-style: none;
-  /* Prevent FOUC (see FAQ page) and keep things readable if javascript is disabled */
-  position: absolute;
-}
-.panel {
-  /* mixin  */
-  width: 610px;
-  min-height: 400px;
-  position: relative;
-  height: 400px;
-  float: left;
-  padding: 15px;
-  background-color: #f1f1f1;
-  border: 5px solid #f59c02;
-  border-radius: 25px;
-  overflow: hidden;
-  -webkit-animation: slidein .5s 1 forwards;
-}
-.go-forward {
-  /* mixin */
-  height: 30px;
-  padding: 6px 7px 7px 19px;
-}
-.next {
-  /* mixin */
-  height: 28px;
-  padding: 9px 0px 0px 35px;
-  background-color: #f86320;
-  width: 75px;
-  float: right;
-  position: relative;
-  margin: -54px 33px 0px 0px;
-  color: #000;
-  font-size: 13pt;
-  font-weight: bold;
-  cursor: pointer;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 
+                0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.confirm {
-  /* mixin */
-  height: 28px;
-  padding: 9px 0px 0px 14px;
-  background-color: #f86320;
-  width: 80px;
-  color: #000;
-  float: right;
-  position: relative;
-  margin: -54px 33px 0px 0px;
-  z-index: 5;
-  font-size: 13pt;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.biol {
-  border: 5px solid #80bc2f;
-}
-.biol .confirm,
-.biol .next {
-  background-color: #78b02c;
-}
-.math {
-  border: 5px solid #cd0990;
-}
-.math .confirm,
-.math .next {
-  background-color: #9c076e;
-}
-.astr {
-  border: 5px solid #46c2f5;
-}
-.astr .confirm,
-.astr .next {
-  background-color: #4ca5c7;
-}
-.geog {
-  border: 5px solid #f59c02;
-}
-.geog .confirm,
-.geog .next {
-  background-color: #f86320;
-}
-.panel:before {
-  content: '';
-  display: inline-block;
-  height: 87%;
-  vertical-align: middle;
-  margin-right: -0.25em;
-  /*Adjusts for spacing*/
-}
-.panel-stuff {
-  width: 490px;
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0px 0px 0px 40px;
-}
-.panel-answer input {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
-}
-.bottom {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-}
-.begin {
-  /* mixin */
-  height: 32px;
-  padding: 11px 0px 0px 30px;
-  background-color: #f59c02;
-  width: 80px;
-  font-size: 13pt;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.fb {
-  width: 70%;
-  margin: 0 auto;
-  margin-top: -30%;
-  font-size: 15pt;
-}
-.title-stuff {
-  width: 480px;
-  display: inline-block;
-  /* vertical-align: middle; */
-  margin: 50px 0px 0px 50px;
-}
-.title-stuff p {
-  color: #252525;
-  font-size: 13pt;
-}
-.panel-question {
-  width: 500px;
-}
-.panel-question h2 {
-  color: #252525;
-}
-.one-box {
-  width: 300px;
-  margin: 0 auto;
-}
-.viewer-answer-one {
-  font-size: 14pt;
-  background-color: #9c076e;
-  color: #ffffff;
-  line-height: 1.5;
-  display: block;
-  margin-bottom: 10px;
-  width: 100%;
-}
-.answer-multiple {
-  font-size: 14pt;
-  background-color: #4ca5c7;
-  padding-top: 3px;
-  color: #ffffff;
-  line-height: 1.5;
-  display: block;
-  margin-bottom: 10px;
-  width: 100%;
-}
-.panel-weight {
-  margin: -30px 0px 0px 0px;
-}
-.highlight {
-  background-color: #f415af;
-}
-.highlight-multiple {
-  background-color: #46c2f5;
-}
-.short-val {
-  width: 490px;
-  text-align: center;
-}
-.long-val {
-  width: 490px;
-}
-.fill-val1,
-.fill-val2,
-.fill-val3 {
-  margin-top: 10px;
-  height: 30px;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
-}
-.fill-val-ran1,
-.fill-val-ran2,
-.fill-val-ran3 {
-  margin-top: 10px;
-  height: 30px;
-  width: 490px;
-  text-align: center;
-}
-.panel table {
-  width: 480px;
-  font-size: 15pt;
-  border-collapse: separate;
-}
-.panel table th {
-  width: 33.33333333%;
-}
-  
-.panel table td {
-  border: 1px solid #000000;
-  border-collapse: separate;
-  padding: 3px 5px 3px 5px;
-
-}
-.panel table input {
-  height: 30px;
-  border: none;
-
-}
-.label-img-box {
-  width: 369px;
-  margin: 0 auto;
-}
-@-moz-document url-prefix() {
-    .label-img-box {width: 379px;}
-}
-.label-img-box .label-img {
-  float: left;
-  margin: 0px 11px 20px 0px;
-}
-.label-img-box .label-img input {
-  display: block;
-  margin: 15px -2px 0px -1px;
-  height: 25px;
-  width: 108px;
-}
-.annotate-img {
-  position: relative;
-  margin: 5px 0px 0px 3px;
-}
-.fill-val-ann1,
-.fill-val-ann2,
-.fill-val-ann3,
-.fill-val-ann4 {
-  height: 30px;
-  width: 113px;
-}
-
-.fill-val-ann1 {
-  margin-top: 15px;
-  float: left;
-}
-.fill-val-ann2 {
-  float: right;
-  margin: 15px 0px 0px 0px;
-}
-.fill-val-ann3 {
-  margin: -116px 0px 0px 0px;
-  float: left;
-}
-.fill-val-ann4 {
-  float: right;
-  margin: -116px 0px 0px 0px;
-}
-.match-words-box {
-  width: 260px;
-  margin: 0 auto;
-}
-.match-words-col1,
-.match-words-col2 {
-  float: left;
-  list-style-type: none;
-  display: inline;
-  font-size: 15pt;
-}
-.match-words-col2 {
-  margin-left: 50px;
-}
-.match-words-col2 li {
-  cursor: move;
-}
-.match-words-row h3 {
-  margin-top: 30px;
-  margin-right: 140px;
-  display: block;
-}
-.match-img-box {
-  width: 320px;
-  margin: 0 auto;
-}
-.match-img-row1,
-.match-img-row2 {
-  float: left;
-}
-.match-img-row1 img,
-.match-img-row2 img {
-  margin-top: 10px;
-  margin-right: 20px;
-  float: left;
-}
-.match-img-row2 img {
-  cursor: move;
-}
-.match-words-pics {
-  display: block;
-  width: 490px;
-  text-align: center;
-}
-.match-wordpic-row1 img {
-  display: inline;
-  margin-right: 20px;
-  margin-bottom: 25px;
-}
-.match-wordpic-row2 p {
-  display: inline;
-  font-size: 13pt;
-  margin: 0px 30px 0px 10px;
-  cursor: move;
-}
-.order-words-ul {
-  text-align: center;
-}
-.order-words-ul li {
-  display: inline;
-  list-style-type: none;
-  margin-right: 30px;
-  font-size: 13pt;
-  cursor: move;
-}
-.order-pics {
-  width: 376px;
-  margin: 0 auto;
-}
-.orderpic1,
-.orderpic2,
-.orderpic3,
-.orderpic4,
-.orderpic5 {
-  float: left;
-  margin-right: 10px;
-  cursor: move;
-}
-.col-title-words {
-  font-size: 1.1em;
-  color: #f1f1f1;
-  background-color: #78b02c;
-  padding-left: 15px;
-}
-.col-title-pics {
-  font-size: 1.1em;
-  color: #f1f1f1;
-  background-color: #f86320;
-  padding-left: 15px;
-}
-.class-words-col {
-  /* mixin */
-  list-style-type: none;
-  background-color: #b8b8b8;
-  min-height: 150px;
-  width: 230px;
-  color: #252525;
-  max-height: 202px;
-  float: left;
-  padding-bottom: 5px;
-}
-.class-words-col1,
-.class-words-col2 {
-  /* mixin */
-  list-style-type: none;
-  background-color: #b8b8b8;
-  min-height: 150px;
-  width: 230px;
-  color: #252525;
-  max-height: 202px;
-  float: left;
-  padding: 0px 0px 5px 0px;
-}
-.class-words-col1 li,
-.class-words-col2 li {
-  list-style-type: none;
-  padding: 5px 0px 0px 0px;
-  text-align: center;
-  font-size: 13pt;
-}
-.class-words-col2 {
-  margin-left: 30px;
-}
-.classify-words hr {
-  clear: left;
-  margin: 40px 0px 0px 0px;
-  border-bottom: 1px solid #000000;
-}
-.word-pool {
-  clear: left;
-  list-style-type: none;
-  display: block;
-  height: 35px;
-}
-.word-pool li {
-  display: inline;
-  margin-right: 15px;
-  font-size: 13pt;
-  cursor: move;
-}
-.high-pic {
-  outline: 2px solid #f59c02;
-}
-.class-pics-col {
-  /* mixin */
-  list-style-type: none;
-  background-color: #b8b8b8;
-  min-height: 150px;
-  width: 230px;
-  color: #252525;
-  max-height: 202px;
-  float: left;
-  padding-bottom: 5px;
-}
-.class-pics-col1,
-.class-pics-col2 {
-  /* mixin */
-  list-style-type: none;
-  background-color: #b8b8b8;
-  min-height: 150px;
-  width: 230px;
-  color: #252525;
-  max-height: 202px;
-  float: left;
-  padding: 0px 0px 5px 0px;
-}
-.class-pics-col1 li,
-.class-pics-col2 li {
-  list-style-type: none;
-  padding: 5px 0px 0px 0px;
-  display: inline;
-}
-.class-pics-col2 {
-  margin-left: 30px;
-}
-.classify-pics hr {
-  clear: left;
-  margin: 40px 0px 0px 0px;
-  border-bottom: 1px solid #000000;
-}
-.pic-pool {
-  height: 51px;
-  padding-left: 0px;
-}
-.pic-pool li {
-  display: inline;
-  margin-right: 2px;
-  cursor: move;
-}
-#holder {
-  border: 4px solid #ccc;
-  width: 300px;
-  height: 250px;
-  margin: 0 auto;
-  display: block;
-  position: relative;
-  overflow: hidden;
-}
-#holder.hover {
-  border: 4px solid #f86320;
-}
-#holder img {
-  display: block;
-  margin: 0 auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-progress {
-  width: 100%;
-}
-progress:after {
-  content: '%';
-}
-.fail {
-  background: #c00;
-  padding: 2px;
-  color: #fff;
-}
-.hidden {
-  display: none !important;
-}
-@-webkit-keyframes slidein {
-  from {
-    -webkit-transform: translateX(-1000px);
-  }
-  to {
-    -webkit-transform: translateX(0px);
-  }
-}
-/*grays*/
-/*metadata box*/
-a {
-  color: inherit;
-}
-ul,
-ol {
-  margin-left: 0px;
-}
-h2 {
-  color: #ffffff;
-}
-/*----------------nav bar---------------*/
-/*ace.css*/
-.navbar {
-  border: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border-radius: 0;
-  margin: 0;
-  padding-left: 0;
-  padding-right: 0;
-  height: 52px;
-  position: relative;
-  background: #000000;
-}
-.navbar .navbar-brand {
-  padding-top: 6px;
-  padding-bottom: 6px;
-  margin-left: 0px;
-  -webkit-animation: fade-in 0.5s 0.4s 1 both;
-  -o-animation: fade-in 0.5s 0.4s 1 both;
-  -moz-animation: fade-in 0.5s 0.4s 1 both;
-  -animation: fade-in 0.5s 0.4s 1 both;
-}
-.navbar .navbar-brand img {
-  width: 174px;
-  height: 40px;
-}
-.nav-search {
-  /* mixin */
-  border: 1px solid #252525;
-  width: 152px;
-  height: 28px !important;
-  padding-top: 4px !important;
-  border-radius: 4px !important;
-  font-size: 13px;
-  background-color: #555555;
-  color: #e30225 !important;
-  z-index: 11;
-  -webkit-transition: width ease .15s;
-  transition: width ease .15s;
-}
-.nav-search p {
-  color: #ffffff;
-}
-.nav-search-lessons {
-  position: relative;
-  float: right;
-  line-height: 24px;
-  margin-top: -36px;
-}
-.nav-search-lessons .nav-search-input {
-  /* mixin */
-  border: 1px solid #252525;
-  width: 152px;
-  height: 28px !important;
-  padding-top: 4px !important;
-  border-radius: 4px !important;
-  font-size: 13px;
-  background-color: #555555;
-  color: #e30225 !important;
-  z-index: 11;
-  -webkit-transition: width ease .15s;
-  transition: width ease .15s;
-}
-.nav-search-lessons .nav-search-input::-webkit-input-placeholder {
-  color: #a9a69e;
-}
-.nav-search-lessons .nav-search-input p {
-  color: #ffffff;
-}
-.nav-search-objects {
-  position: relative;
-  float: right;
-  line-height: 24px;
-  margin-top: -32px;
-}
-.nav-search-objects .nav-search-input {
-  /* mixin */
-  border: 1px solid #252525;
-  width: 152px;
-  height: 28px !important;
-  padding-top: 4px !important;
-  border-radius: 4px !important;
-  font-size: 13px;
-  background-color: #555555;
-  color: #e30225 !important;
-  z-index: 11;
-  -webkit-transition: width ease .15s;
-  transition: width ease .15s;
-}
-.nav-search-objects .nav-search-input::-webkit-input-placeholder {
-  color: #a9a69e;
-}
-.nav-search-objects .nav-search-input p {
-  color: #ffffff;
-}
-.input-icon > .ace-icon {
-  padding: 0 3px;
-  z-index: 2;
-  position: absolute;
-  top: 1px;
-  bottom: 1px;
-  left: 3px;
-  line-height: 28px;
-  display: inline-block;
-  color: #46c2f5;
-  font-size: 16px;
-}
-.ace-nav {
-  padding: 8px 10px 4px;
-  display: block;
-  /*float: none !important;*/
-  text-align: center;
-  background-color: #000000;
-  border: none;
-  border-width: 0;
-  letter-spacing: 0px;
-  margin-right: 15px !important;
-  min-height: 52px;
-}
-.ace-nav .nav-user-photo {
-  margin: -4px 8px 0 0;
-  border-radius: 0;
-  border: 2px solid #4ca5c7;
-  max-width: 50px;
-}
-.ace-nav .user-info {
-  width: 70px;
-  float: left;
-  margin: -4px 10px 0px 0px;
-  color: #4ca5c7;
-}
-.ace-nav .user-info i {
-  color: #4ca5c7;
-  float: right;
-  margin: -12px 0px 0px -1px;
-}
-/*---------------- page layout ---------------*/
-html {
-  background-color: #353535;
-}
-body {
-  width: 100%;
-  background-color: #353535;
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-}
-.main-content {
-  margin-left: 0px;
-}
-.page-content {
-  margin: 0;
-  background-color: #353535;
-  padding: 8px 20px 24px;
-  /* LS padding removed to give complete gray background in view_lesson */
-}
-.container {
-  width: 100%;
-  min-width: 1185px;
-  padding: 0;
-  background-color: #353535;
-}
-.container button {
-  border: none;
-}
-/*---------------- student browser ---------------*/
-.view-lessons {
-  background-color: #353535;
-  min-height: 100%;
-  padding: 0px 30px;
-}
-.sb-dropdown-bar {
-  padding: 15px 0px 20px 0px;
-}
-.sb-dropdown-bar label {
-  color: #ffffff;
-  margin-right: 8px;
-}
-.sb-dropdown-bar select {
-  margin-right: 15px;
-}
-.sb-lesson-container {
-  width: 70%;
-  margin: 0 auto;
-  padding-right: 8px;
-  min-height: 150px;
-  height: 938px;
-  background: transparent;
-  overflow-y: scroll;
-}
-.sb-lesson {
-  width: 100%;
-  background-color: #f5f5f5;
-  margin: 0px 0px 20px 0px;
-  padding-bottom: 10px;
-  border: none;
-}
-.sb-lesson ul {
-  list-style-type: none;
-}
-.sb-lesson-container::-webkit-scrollbar {
-  width: 12px;
-  height: 20px;
-}
-.sb-lesson-container::-webkit-scrollbar-thumb {
-  /* thing that scrolls */
-  height: 4px;
-  width: 2px;
-  border: 2px solid rgba(0, 0, 0, 0);
-  background-clip: padding-box;
-  background-color: #555555;
-}
-.sb-lesson-container::-webkit-scrollbar-track {
-  background-color: transparent;
-  border-top: 1px solid #555555;
-  border-bottom: 1px solid #555555;
-  border-right: 1px solid #555555;
-  border-left: 1px solid #555555;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-}
-/*---------------- upload ---------------*/
-#storage-form-div {
-  margin: -6px 0px -12px 0px;
-  cursor: pointer;
-}
-#light-add {
-  /* mixin */
-  display: none;
-  position: absolute;
-  z-index: 1002;
-  overflow: visible;
-}
-#light-add1 {
-  /* mixin */
-  display: none;
-  position: absolute;
-  z-index: 1002;
-  overflow: visible;
-}
-#light-add2 {
-  /* mixin */
-  display: none;
-  position: absolute;
-  z-index: 1002;
-  overflow: visible;
-}
-#light-add4 {
-  /* mixin */
-  display: none;
-  position: absolute;
-  z-index: 1002;
-  overflow: visible;
-}
-#light-shareall {
-  /* mixin */
-  display: none;
-  position: absolute;
-  z-index: 1002;
-  overflow: visible;
-  top: 20%;
-  left: 50%;
-  margin-left: -260px;
-}
-/*---------------- pop-up boxes ---------------*/
-.top-bar1 {
-  height: 30px;
-  background-color: #1e7d88;
-  padding: 4px 20px 0px 20px;
-  font-weight: bold;
-  color: #ffffff;
-  border-radius: 10px 10px 0px 0px;
-}
-.top-bar1 i {
-  float: right;
-  margin-right: -7px;
-}
-.bottom-bar1 {
-  padding: 40px 20px 20px 40px;
-  background-color: #f5f5f5;
-  border-radius: 0px 0px 10px 10px;
-}
-.bottom-bar1 img {
-  margin-right: 25px;
-}
-.top-bar2 {
-  height: 30px;
-  background-color: #1e7d88;
-  padding: 4px 20px 0px 20px;
-  font-weight: bold;
-  color: #ffffff;
-  border-radius: 10px 10px 0px 0px;
-}
-.top-bar2 i {
-  float: right;
-  margin-right: -7px;
-}
-.bottom-bar2 {
-  padding: 20px 20px 20px 20px;
-  border-radius: 0px 0px 10px 10px;
-  background-color: #f5f5f5;
-}
-.add-object-buttons {
-  top: 20%;
-  left: 50%;
-  border: 4px solid #4ca5c7;
-  margin-left: -250px;
-  border-radius: 15px;
-}
-.pop-up {
-  /* mixin */
-  display: none;
-  border-radius: 12px;
-  border: 4px solid #4ca5c7;
-  background-color: #f5f5f5;
-}
-.add-resource {
-  /* mixin */
-  display: none;
-  border-radius: 12px;
-  border: 4px solid #4ca5c7;
-  background-color: #f5f5f5;
-  top: 20%;
-  left: 50%;
-  margin-left: -258px;
-}
-.add-resource button {
-  background-color: #ffffff;
-  border: 1px solid #46c2f5;
-}
-.add-resource label {
-  display: block;
-}
-.add-resource input {
-  margin-bottom: 10px;
-}
-.add-resource select {
-  margin-bottom: 10px;
-}
-.add-resource textarea {
-  margin-bottom: 10px;
-}
-.add-assessment {
-  /* mixin */
-  display: none;
-  border-radius: 12px;
-  border: 4px solid #4ca5c7;
-  background-color: #f5f5f5;
-  z-index: 1050;
-  top: 3%;
-  left: 50%;
-  margin-left: -312.5px;
-  width: 625px;
-}
-.question-type {
-  display: inline-block;
-  margin: 5px;
-}
-#fade {
-  display: none;
-  position: fixed;
-  top: 0%;
-  left: 0%;
-  width: 100%;
-  height: 100%;
-  background-color: #000;
-  z-index: 1001;
-  -moz-opacity: .7;
-  opacity: .7;
-  filter: alpha(opacity=70);
-}
-/*-------- upload library and progress bar -----*/
-.progress {
-  float: right;
-  height: 5px;
-  width: 152px;
-  margin-top: -55px;
-  overflow: hidden;
-  background-color: #555555;
-  border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-.progress-bar {
-  float: left;
-  width: 0;
-  height: 100%;
-  font-size: 12px;
-  color: #ffffff;
-  text-align: center;
-  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  -webkit-transition: width 0.6s ease;
-  transition: width 0.6s ease;
-}
-.progress-bar-success {
-  background-color: #afd529;
-}
-.fileinput-button {
-  position: relative;
-  /* LS keeps clickable area to image only */
-  overflow: hidden;
-}
-.fileinput-button input {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 0;
-  opacity: 0;
-  -ms-filter: 'alpha(opacity=0)';
-  font-size: 200px;
-  direction: ltr;
-  cursor: pointer;
-}
-/*----------------learning objects---------------*/
-.box-learning-objects {
-  background-color: #353535;
-  padding: 2px 12px 15px 20px;
-  width: 40%;
-  float: left;
-  height: 100%;
-  min-width: 465px;
-}
-.learning-objects-class {
-  background-color: #353535;
-  min-height: 940px;
-  height: 500px;
-  min-width: 410px;
-  width: 100%;
-  overflow-y: auto;
-  padding-right: 8px;
-}
-.learning-objects-class ul {
-  /*same as #learning-objects, -class added to keep id name unique*/
-  margin-left: 0px;
-  list-style-type: none;
-  background-color: #f5f5f5;
-  padding: 15px 0px 20px 15px;
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-.learning-objects-class ul li {
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
-  vertical-align: top;
-  margin: 0px 15px 0px 0px;
-  width: 80px;
-}
-.learning-objects-class::-webkit-scrollbar {
-  width: 12px;
-  height: 20px;
-}
-.learning-objects-class::-webkit-scrollbar-thumb {
-  /* thing that scrolls */
-  height: 4px;
-  width: 2px;
-  border: 2px solid rgba(0, 0, 0, 0);
-  background-clip: padding-box;
-  background-color: #555555;
-}
-.learning-objects-class::-webkit-scrollbar-track {
-  background-color: transparent;
-  border-top: 1px solid #555555;
-  border-bottom: 1px solid #555555;
-  border-right: 1px solid #555555;
-  border-left: 1px solid #555555;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-}
-/*---------------- icons ---------------*/
-/*:focus {
-    outline: .05em solid -webkit-focus-ring-color;
-}*/
-.obj-box {
-  width: 80px;
-  height: 100px;
-  display: inline-block;
-  font-family: "Helvetica Neue";
-}
-.icon {
-  margin-top: 21px;
-  color: #ffffff;
-  text-align: center;
-}
-.obj-type {
-  background-color: #ffffff;
-  height: 25px;
-  border: 1px solid;
-  margin-top: 16px;
-}
-.obj-type p {
-  text-align: center;
-  padding-top: 2px;
-  font-size: 9pt;
-}
-.obj-title {
-  width: 90px;
-  height: 31px;
-  margin-left: -5px;
-  overflow: hidden;
-}
-.obj-title p {
-  width: 90px;
-  text-align: center;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 8pt;
-  margin-top: 4px;
-  line-height: 14px;
-  text-overflow: ellipsis;
-  display: inline-block;
-  word-wrap: normal;
-}
-.obj-anchor a {
-  visibility: hidden;
-}
-/*----------------metadata box---------------*/
-.right {
-  position: relative;
-  left: -295px;
-}
-#meta-arrow {
-  /*mixin */
-  height: 0;
-  width: 0;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-bottom: 9px solid #7a7a7a;
-  position: relative;
-}
-.right .meta-arrow {
-  /*mixin */
-  height: 0;
-  width: 0;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-bottom: 9px solid #7a7a7a;
-  position: relative;
-  left: 330px;
-}
-.meta-arrow {
-  /*mixin */
-  height: 0;
-  width: 0;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-bottom: 9px solid #7a7a7a;
-  position: relative;
-  left: 35px;
-}
-.met-box {
-  min-height: 150px;
-  width: 375px;
-  background-color: #d7d7d7;
-  opacity: .8;
-  font-family: Helvetica, Arial, sans-serif;
-  margin-bottom: 15px;
-}
-.met-box-title {
-  background-color: #555555;
-  color: #ffffff;
-  font-size: 14pt;
-  padding: 5px 10px 1px 10px;
-}
-.non-color-bar-display {
-  padding: 5px 10px 10px 10px;
-}
-.met-open {
-  float: right;
-  background-color: #252525;
-  color: #ffffff;
-  font-size: 9pt;
-  font-weight: bold;
-  padding: 2px 3px;
-  margin: -28px 10px -10px 0px;
-}
-.met-color-align {
-  margin-top: -8px;
-  margin-bottom: 20px;
-}
-.met-box-type select {
-  background-color: #eeeeee;
-  color: #000;
-  font-size: 12pt;
-  border: 1px solid #000000;
-  padding: -1px;
-}
-.met-box-type-display {
-  display: inline-block;
-  background-color: #b8b8b8;
-  font-size: 10pt;
-  font-weight: bold;
-  padding: 3px 3px;
-  border: 1px solid #000000;
-  margin-top: 10px;
-}
-.met-box-desc {
-  margin-top: 10px;
-  color: #000000;
-  font-size: 10pt;
-  min-height: 35px;
-}
-.met-box-url {
-  margin-top: -10px;
-  color: #000000;
-  font-size: 10pt;
-  font-style: italic;
-}
-.obj-edit {
-  margin-top: 10px;
-  width: 35px;
-  background-color: #ffffff;
-  color: #000000;
-  padding-left: 5px;
-}
-.obj-trash {
-  width: 50px;
-  float: left;
-  background-color: #000000;
-  margin-top: 5px;
-  padding: 3px;
-  color: #ffffff;
-}
-.met-cancel {
-  margin-left: 210px;
-  background-color: #ffffff;
-  margin-top: 5px;
-  padding: 3px;
-  color: #000000;
-}
-.met-done {
-  float: right;
-  background-color: #ffffff;
-  margin-top: 5px;
-  padding: 3px;
-  color: #000000;
-}
-.form-box-url {
-  margin-bottom: 10px;
-  color: #000000;
-}
-input[type=text] {
-  color: #000000;
-}
-textarea {
-  resize: none;
-  color: #000000;
-}
-.met-box-menu {
-  margin-top: -100px;
-  margin-bottom: 10px;
-  color: #000000;
-}
-.met-box-type-student {
-  font-style: italic;
-}
-.edit-mode {
-  display: none;
-  padding: 10px 10px;
-}
-/*---------------- display order alpha/numeric buttons---------------*/
-.display-order-objects {
-  margin-top: -27px;
-  margin-left: 39%;
-  margin-bottom: 18px;
-}
-.display-order-objects li {
-  width: 24px;
-  height: 24px;
-  color: #555555;
-  display: inline-block;
-  background-color: #e2e2e2;
-  border: 1px solid #7a7a7a;
-  border-right: none;
-}
-.display-order-lessons {
-  margin-top: -35px;
-  margin-left: 45%;
-  width: 100px;
-}
-.display-order-objects li.active {
-  /* apply this class to active li element */
-  background-color: #e2e2e2;
-  -moz-box-shadow: inset 0 0 6px #252525;
-  -webkit-box-shadow: inset 0 0 6px #252525;
-  box-shadow: inset 0 0 6px #252525;
-}
-.display-order-objects .last,
-.display-order-lessons .last {
-  border-right: 1px solid #7a7a7a;
-}
-.display-order-lessons li {
-  width: 24px;
-  height: 24px;
-  color: #555555;
-  display: inline-block;
-  background-color: #e2e2e2;
-  border: 1px solid #7a7a7a;
-  border-right: none;
-}
-.display-order-lessons li:active {
-  background-color: #e2e2e2;
-  -moz-box-shadow: inset 0 0 6px #252525;
-  -webkit-box-shadow: inset 0 0 6px #252525;
-  box-shadow: inset 0 0 6px #252525;
-}
-.display-order-lessons li i {
-  margin: 3px 0px 0px 5px;
-}
-.display-order-objects li i {
-  margin: 3px 0px 0px 5px;
-}
-/*---------------- buttons---------------*/
-#lesson-btn-bkgd {
-  /* mixin */
-  background-color: transparent;
-}
-.btn-shareall {
-  float: right;
-  margin-top: 10px;
-  margin-right: -7px;
-  /* mixin */
-  background-color: transparent;
-}
-.btn-shareall i {
-  margin-top: 4px;
-  margin-bottom: -2px;
-  color: #80bc2f;
-}
-.btn-shareall p {
-  margin-left: 5px;
-  margin-top: 2px;
-  float: right;
-  color: #ffffff;
-}
-.btn-newlesson {
-  margin: -5px 0px 0px 0px;
-  /* mixin */
-  background-color: transparent;
-}
-.btn-newlesson i {
-  margin-top: 4px;
-  float: left;
-  margin-bottom: -2px;
-  color: #80bc2f;
-}
-.btn-newlesson p {
-  margin-left: 5px;
-  margin-top: 2px;
-  float: right;
-  color: #ffffff;
-}
-.btn-deletelesson {
-  float: right;
-  margin-right: -5px;
-  margin-bottom: -27px;
-  /* mixin */
-  background-color: transparent;
-}
-.btn-deletelesson i {
-  margin-top: 4px;
-  float: left;
-  margin-bottom: -2px;
-  color: #80bc2f;
-}
-.btn-deletelesson p {
-  margin-left: 5px;
-  margin-top: 2px;
-  float: right;
-  color: #252525;
-}
-/*----------------lessons---------------*/
-.box-lessons {
-  width: 58.5%;
-  background-color: #353535;
-  padding: 2px 20px 15px 20px;
-  min-width: 625px;
-  float: right;
-  position: relative;
-  min-height: 150px;
-}
-.box-lessons-container {
-  background-color: #353535;
-  width: 100%;
-  min-height: 150px;
-  height: 938px;
-  overflow-y: auto;
-  margin-top: -4px;
-  padding-right: 8px;
-}
-.box-lessons-container::-webkit-scrollbar {
-  width: 12px;
-  height: 20px;
-}
-.box-lessons-container::-webkit-scrollbar-thumb {
-  /* thing that scrolls */
-  height: 4px;
-  width: 2px;
-  border: 2px solid rgba(0, 0, 0, 0);
-  background-clip: padding-box;
-  background-color: #555555;
-}
-.box-lessons-container::-webkit-scrollbar-track {
-  background-color: transparent;
-  border-top: 1px solid #555555;
-  border-bottom: 1px solid #555555;
-  border-right: 1px solid #555555;
-  border-left: 1px solid #555555;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-}
-.lesson {
-  width: 100%;
-  background-color: #f5f5f5;
-  margin: 0px 0px 20px 0px;
-  padding-bottom: 10px;
-  border: none;
-}
-.lesson ul {
-  list-style-type: none;
-}
-.color-bar {
-  height: 35px;
-  padding-left: 19px;
-  padding-top: 6px;
-  margin-bottom: 10px;
-}
-.lesson-name {
-  margin-top: -5px;
-  font-size: 22px;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-weight: normal;
-  width: 650px;
-}
-.lesson-color {
-  margin-top: -12px;
-  margin-right: 19px;
-}
-.non-color-bar {
-  padding: 0px 19px 19px 19px;
-}
-.lesson-class {
-  min-height: 150px;
-  /* border: 2px solid @color-gray-mercury; */
-  padding: 15px 15px;
-  margin: 0;
-  background-color: #f5f5f5;
-}
-.lesson-class li {
-  display: inline-block;
-  margin: 0px 15px 0px 0px;
-  position: relative;
-  cursor: pointer;
-  vertical-align: top;
-  width: 80px;
-}
-.inline-editor {
-  display: inline;
-}
-/*----------------completion icons---------------*/
-#circle {
-  /* mixin */
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  margin-bottom: -16px;
-  margin-left: 64px;
-  position: relative;
-  z-index: 2;
-  border: 1px solid #ffffff;
-}
-#circle-i {
-  margin-top: 4px;
-  z-index: 3;
-  color: #ffffff;
-}
-.circle-red {
-  /* mixin */
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  margin-bottom: -16px;
-  margin-left: 64px;
-  position: relative;
-  z-index: 2;
-  border: 1px solid #ffffff;
-  background-color: #fecb2e;
-}
-.circle-red i {
-  margin-top: 4px;
-  z-index: 3;
-  color: #ffffff;
-  margin-left: 8px;
-}
-.circle-green {
-  /* mixin */
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  margin-bottom: -16px;
-  margin-left: 64px;
-  position: relative;
-  z-index: 2;
-  border: 1px solid #ffffff;
-  background-color: #80bc2f;
-}
-.circle-green i {
-  margin-top: 4px;
-  z-index: 3;
-  color: #ffffff;
-  margin-left: 3px;
-}
-.circle-blue {
-  /* mixin */
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  margin-bottom: -16px;
-  margin-left: 64px;
-  position: relative;
-  z-index: 2;
-  border: 1px solid #ffffff;
-  background-color: #46c2f5;
-}
-.circle-blue i {
-  margin-top: 4px;
-  z-index: 3;
-  color: #ffffff;
-  margin-left: 6px;
-}
-/*----------------log in---------------*/
-.log-in-box {
-  width: 30%;
-  margin: 0 auto;
-  background-color: #afd529;
-  opacity: .7;
-  z-index: -3;
-  -webkit-animation: drop 0.5s ease-out 1 forwards;
-  -o-animation: drop 0.5s ease-out 1 forwards;
-  -moz-animation: drop 0.5s ease-out 1 forwards;
-  -animation: drop 0.5s ease-out 1 forwards;
-}
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
-  margin-bottom: 10px;
-}
-.form-signin {
-  max-width: 330px;
-  padding: 15px;
-  margin: 0 auto;
-}
-.form-signin .checkbox {
-  font-weight: normal;
-}
-.form-signin .form-control {
-  position: relative;
-  height: auto;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 10px;
-  font-size: 16px;
-}
-.form-signin .form-control:focus {
-  z-index: 2;
-}
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-/*----------------quiz-builder---------------*/
-.btn-newquestion {
-  background-color: #f5f5f5;
-  height: 68px;
-  font-size: 12pt;
-  border: none;
-  position: relative;
-  left: 50%;
-  margin-left: -76px;
-}
-.btn-newquestion i {
-  margin-top: 20px;
-  float: left;
-  color: #4ca5c7;
-}
-.btn-newquestion p {
-  margin-left: 10px;
-  margin-top: 20px;
-  float: left;
-}
-.builder-left {
-  margin-top: -16px;
-  width: 35%;
-  float: left;
-  background-color: #f5f5f5;
-  border-right: 1px solid #46c2f5;
-}
-.outline-questions {
-  height: 590px;
-  overflow-y: scroll;
-  margin-top: -2px;
-  width: 100%;
-}
-.outline-sortable {
-  list-style: none;
-}
-.outline-thumb {
-  background-color: #ffffff;
-  border-bottom: 2px solid #d7d7d7;
-  padding: 0px;
-  min-height: 50px;
-  overflow: auto;
-  position: relative;
-}
-.outline-thumb .fa-unsorted {
-  position: absolute;
-  top: 50%;
-  margin-top: -8px;
-  margin-left: 15px;
-  width: 9px;
-  cursor: all-scroll;
-}
-.outline-thumb:active {
-  background-color: #46c2f5;
-}
-.outline-thumb .thumb-color {
-  height: 100%;
-  position: absolute;
-  width: 10px;
-  left: 0;
-  background-color: #ffffff;
-}
-.outline-thumb .thumb-right {
-  float: left;
-  margin-left: 50px;
-  width: 87%;
-  min-width: 87%;
-  min-height: 70px;
-  overflow: auto;
-}
-.outline-thumb .delete-question {
-  height: 25px;
-  float: right;
-  margin-top: 2px;
-  margin-right: 1px;
-  background-color: transparent;
-  color: #252525;
-  padding: 0px 1px 0px 0px;
-}
-.outline-thumb .thumb-question {
-  margin-top: 10px;
-  width: 90%;
-  margin-bottom: 5px;
-  min-height: 20px;
-}
-.outline-thumb .thumb-number {
-  float: left;
-  width: 25px;
-  color: #7a7a7a;
-  font-size: 9pt;
-}
-.outline-thumb .thumb-type {
-  float: left;
-  width: 125px;
-  color: #e30225;
-  font-size: 8pt;
-}
-.outline-thumb .thumb-weight {
-  float: right;
-  padding: 2px 4px;
-  color: #ffffff;
-  background-color: #7a7a7a;
-  font-size: 8pt;
-  margin-top: -3px;
-  margin-right: 2px;
-}
-.builder {
-  margin-top: -16px;
-  width: 65%;
-  float: right;
-  height: 658px;
-  background-color: #e2e2e2;
-}
-.general-info-form {
-  background-color: #b8b8b8;
-  border-bottom: 1px solid #46c2f5;
-  padding: 30px 15px 0px 30px;
-}
-.general-info-form label {
-  display: inline-block;
-}
-.general-info-form input {
-  display: inline;
-  margin-left: 30px;
-  vertical-align: top;
-  min-width: 71%;
-}
-.general-info-form textarea {
-  display: inline;
-  vertical-align: top;
-  margin-left: 28px;
-  margin-top: 5px;
-  min-width: 71%;
-}
-.btn-savequiz {
-  background: transparent;
-  display: block;
-  margin-left: 50px;
-}
-.btn-savequiz p {
-  margin-left: 110px;
-  margin-top: -20px;
-}
-.question-type-form {
-  display: none;
-  padding: 30px 15px 0px 30px;
-  height: 457px;
-  overflow-y: scroll;
-}
-.question-type-form textarea {
-  vertical-align: top;
-  margin-left: 45px;
-  overflow-y: auto;
-  min-width: 72%;
-}
-.type {
-  margin-left: 10px;
-  display: inline-block;
-  font-size: 11pt;
-  margin-top: 1px;
-}
-.quiz-answers {
-  vertical-align: top;
-  margin-left: 110px;
-  margin-top: -20px;
-  max-width: 87.5%;
-}
-.answers-sortable {
-  list-style: none;
-}
-.answer {
-  height: 32px;
-  margin-bottom: 1px;
-  margin-left: 3px;
-}
-.btn-move {
-  background-color: #b8b8b8;
-  color: #252525;
-  height: 32px;
-  width: 22px;
-  vertical-align: top;
-  cursor: all-scroll;
-}
-.btn-move i {
-  vertical-align: middle;
-}
-.check {
-  background-color: #46c2f5;
-  color: #ffffff;
-  height: 32px;
-  width: 32px;
-  vertical-align: top;
-  margin-left: -3px;
-}
-.check i {
-  margin-top: 4px;
-  margin-left: 2px;
-}
-.answer input {
-  margin-left: -3px;
-  margin-top: 0px;
-  height: 32px;
-  border: none;
-  min-width: 78%;
-}
-.btn-delete {
-  background-color: transparent;
-  color: #252525;
-  height: 32px;
-  width: 20px;
-  margin-left: -3px;
-}
-.btn-delete i {
-  vertical-align: middle;
-}
-.btn-newanswer {
-  background-color: transparent;
-  margin: 0px 0px 10px 0px;
-  font-size: 11pt;
-  border: none;
-  height: 20px;
-  float: left;
-  margin-right: 155px;
-}
-.btn-newanswer i {
-  color: #4ca5c7;
-  float: left;
-}
-.btn-newanswer p {
-  margin-left: 6px;
-  float: right;
-  margin-top: -3px;
-}
-/*---------------- randomize switch ---------------*/
-.question-randomize {
-  list-style: none;
-  width: 85px;
-  height: 26px;
-  display: inline-block;
-  vertical-align: top;
-  margin-left: 10px;
-  float: left;
-}
-.question-randomize li {
-  float: left;
-  line-height: 23px;
-  font-size: 11px;
-  padding: 2px 10px 0;
-  background: #f5f5f5;
-  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e2e2e2), to(#f5f5f5));
-  border-left: 1px solid #D5D5D5;
-  border-top: 1px solid #D5D5D5;
-  border-bottom: 1px solid #D5D5D5;
-  -webkit-box-shadow: 0 1px 0 #ffffff inset, 0 0 5px rgba(0, 0, 0, 0.1) inset, 0 1px 1px rgba(0, 0, 0, 0.3);
-}
-.question-randomize li a {
-  text-decoration: none;
-  color: #555555;
-}
-.question-randomize li:first-child {
-  -webkit-border-radius: 5px 0 0 5px;
-}
-.question-randomize li:last-child {
-  -webkit-border-radius: 0 5px 5px 0;
-}
-.question-randomize li:not(.on):active {
-  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#dddddd), to(#f1f1f1));
-}
-.question-randomize li.on a {
-  color: #46c2f5;
-  cursor: default;
-}
-.question-randomize .on {
-  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7a7a7a), to(#555555));
-  border-right: 1px solid #555555;
-  border-top: 1px solid #555555;
-  border-bottom: 1px solid #555555;
-  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.7) inset, 0 1px 0 #ffffff;
-}
-/*----------------lesson browser---------------*/
-/* .widget-box {
-  padding: 0;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  margin: 3px 0;
-  border-bottom: 1px solid #CCC;
-} */
-/* .widget-header {
-  position: relative;
-  min-height: 38px;
-  background: #f7f7f7;
-  border-bottom: 1px solid #DDD;
-  padding-left: 12px;
-} */
-.class-list {
-  /* whole list */
-  padding: 0 0 0 30px;
-  width: 500px;
-}
-.class-list li {
-  /* first list-item; classes */
-  position: relative;
-  list-style: none;
-}
-.class-list li input {
-  /* hidden input fields  of classes */
-  position: absolute;
-  left: 0;
-  margin-left: 0;
-  opacity: 0;
-  z-index: 2;
-  cursor: pointer;
-  height: 1em;
-  width: 1em;
-  top: 0;
-}
-.class-list li input + ul {
-  /* can't see, just for ol of first item placement */
-  margin: -0.938em 0 0 -44px;
-  /* 15px */
-  height: 1em;
-}
-.class-list li input + ul > li {
-  /* second list-item; units */
-  display: none;
-  margin-left: 0px !important;
-  padding-left: 1px;
-}
-.class-list li input:checked + ul {
-  margin: 0px 0 0 -44px;
-  /* 20px */
-  padding: 0px 0 0 60px;
-  height: auto;
-}
-.class-list li input:checked + ul > li {
-  display: block;
-  margin: 0 0 0 60px;
-  /* 2px */
-}
-.class-list li input:checked + ul > li input:checked + ul > li {
-  display: block;
-  padding: 0 0 0 40px;
-  /* 2px */
-  margin: 5px 0px;
-}
-.class-list li label {
-  cursor: pointer;
-  display: block;
-  padding-left: 37px;
-}
-/*----------------animation---------------*/
-@-webkit-keyframes drop {
-  0% {
-    -webkit-transform: translateY(-600px);
-  }
-  60% {
-    -webkit-transform: translateY(120px);
-  }
-  80% {
-    -webkit-transform: translateY(100px);
-  }
-  100% {
-    -webkit-transform: translateY(120px);
-  }
-}
-@-o-keyframes drop {
-  0% {
-    -webkit-transform: translateY(-600px);
-  }
-  60% {
-    -webkit-transform: translateY(120px);
-  }
-  80% {
-    -webkit-transform: translateY(100px);
-  }
-  100% {
-    -webkit-transform: translateY(120px);
-  }
-}
-@-moz-keyframes drop {
-  0% {
-    -webkit-transform: translateY(-600px);
-  }
-  60% {
-    -webkit-transform: translateY(120px);
-  }
-  80% {
-    -webkit-transform: translateY(100px);
-  }
-  100% {
-    -webkit-transform: translateY(120px);
-  }
-}
-@keyframes drop {
-  0% {
-    -webkit-transform: translateY(-600px);
-  }
-  60% {
-    -webkit-transform: translateY(120px);
-  }
-  80% {
-    -webkit-transform: translateY(100px);
-  }
-  100% {
-    -webkit-transform: translateY(120px);
-  }
-}
-@-webkit-keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
+.info_box.activeInfo,
+.quiz_box.activeQuiz,
+.result_box.activeResult{
     opacity: 1;
-  }
+    z-index: 5;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
 }
-@-o-keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+
+.start_btn button{
+    font-size: 25px;
+    font-weight: 500;
+    color: #007bff;
+    padding: 15px 30px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    background: #fff;
+    cursor: pointer;
 }
-@-moz-keyframes fade-in {
-  from {
+
+.info_box{
+    width: 540px;
+    background: #fff;
+    border-radius: 5px;
+    transform: translate(-50%, -50%) scale(0.9);
     opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    pointer-events: none;
+    transition: all 0.3s ease;
 }
-@keyframes fade-in {
-  from {
+
+.info_box .info-title{
+    height: 60px;
+    width: 100%;
+    border-bottom: 1px solid lightgrey;
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    border-radius: 5px 5px 0 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.info_box .info-list{
+    padding: 15px 30px;
+}
+
+.info_box .info-list .info{
+    margin: 5px 0;
+    font-size: 17px;
+}
+
+.info_box .info-list .info span{
+    font-weight: 600;
+    color: #007bff;
+}
+.info_box .buttons{
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 30px;
+    border-top: 1px solid lightgrey;
+}
+
+.info_box .buttons button{
+    margin: 0 5px;
+    height: 40px;
+    width: 100px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #007bff;
+    transition: all 0.3s ease;
+}
+
+.quiz_box{
+    width: 550px;
+    background: #fff;
+    border-radius: 5px;
+    transform: translate(-50%, -50%) scale(0.9);
     opacity: 0;
-  }
-  to {
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.quiz_box header{
+    position: relative;
+    z-index: 2;
+    height: 70px;
+    padding: 0 30px;
+    background: #fff;
+    border-radius: 5px 5px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.1);
+}
+
+.quiz_box header .title{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.quiz_box header .timer{
+    color: #004085;
+    background: #cce5ff;
+    border: 1px solid #b8daff;
+    height: 45px;
+    padding: 0 8px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 145px;
+}
+
+.quiz_box header .timer .time_left_txt{
+    font-weight: 400;
+    font-size: 17px;
+    user-select: none;
+}
+
+.quiz_box header .timer .timer_sec{
+    font-size: 18px;
+    font-weight: 500;
+    height: 30px;
+    width: 45px;
+    color: #fff;
+    border-radius: 5px;
+    line-height: 30px;
+    text-align: center;
+    background: #343a40;
+    border: 1px solid #343a40;
+    user-select: none;
+}
+
+.quiz_box header .time_line{
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    height: 3px;
+    background: #007bff;
+}
+
+section{
+    padding: 25px 30px 20px 30px;
+    background: #fff;
+}
+
+section .que_text{
+    font-size: 25px;
+    font-weight: 600;
+}
+
+section .option_list{
+    padding: 20px 0px;
+    display: block;   
+}
+
+section .option_list .option{
+    background: aliceblue;
+    border: 1px solid #84c5fe;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 17px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+section .option_list .option:last-child{
+    margin-bottom: 0px;
+}
+
+section .option_list .option:hover{
+    color: #004085;
+    background: #cce5ff;
+    border: 1px solid #b8daff;
+}
+
+section .option_list .option.correct{
+    color: #155724;
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+section .option_list .option.incorrect{
+    color: #721c24;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+section .option_list .option.disabled{
+    pointer-events: none;
+}
+
+section .option_list .option .icon{
+    height: 26px;
+    width: 26px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 13px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    line-height: 24px;
+}
+.option_list .option .icon.tick{
+    color: #23903c;
+    border-color: #23903c;
+    background: #d4edda;
+}
+
+.option_list .option .icon.cross{
+    color: #a42834;
+    background: #f8d7da;
+    border-color: #a42834;
+}
+
+footer{
+    height: 60px;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid lightgrey;
+}
+
+footer .total_que span{
+    display: flex;
+    user-select: none;
+}
+
+footer .total_que span p{
+    font-weight: 500;
+    padding: 0 5px;
+}
+
+footer .total_que span p:first-child{
+    padding-left: 0px;
+}
+
+footer button{
+    height: 40px;
+    padding: 0 13px;
+    font-size: 18px;
+    font-weight: 400;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    color: #fff;
+    border-radius: 5px;
+    background: #007bff;
+    border: 1px solid #007bff;
+    line-height: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.95);
+    transition: all 0.3s ease;
+}
+
+footer button:hover{
+    background: #0263ca;
+}
+
+footer button.show{
     opacity: 1;
-  }
-  }</style>
+    pointer-events: auto;
+    transform: scale(1);
+}
+
+.result_box{
+    background: #fff;
+    border-radius: 5px;
+    display: flex;
+    padding: 25px 30px;
+    width: 450px;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.result_box .icon{
+    font-size: 100px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.result_box .complete_text{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.result_box .score_text span{
+    display: flex;
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.result_box .score_text span p{
+    padding: 0 4px;
+    font-weight: 600;
+}
+
+.result_box .buttons{
+    display: flex;
+    margin: 20px 0;
+}
+
+.result_box .buttons button{
+    margin: 0 10px;
+    height: 45px;
+    padding: 0 20px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #007bff;
+    transition: all 0.3s ease;
+}
+
+.buttons button.restart{
+    color: #fff;
+    background: #007bff;
+}
+
+.buttons button.restart:hover{
+    background: #0263ca;
+}
+
+.buttons button.quit{
+    color: #007bff;
+    background: #fff;
+}
+
+.buttons button.quit:hover{
+    color: #fff;
+    background: #007bff;
+}
+    </style>
+</head>
 <body>
-<div class="darkcontent">
+    <!-- start Quiz button -->
+    <div class="start_btn"><button>Start Quiz</button></div>
 
-<!-- <div class="page-content"> -->
+    <!-- Info Box -->
+    <div class="info_box">
+        <div class="info-title"><span>Some Rules of this Quiz</span></div>
+        <div class="info-list">
+            <div class="info">1. You will have only <span>15 seconds</span> per each question.</div>
+            <div class="info">2. Once you select your answer, it can't be undone.</div>
+            <div class="info">3. You can't select any option once time goes off.</div>
+            <div class="info">4. You can't exit from the Quiz while you're playing.</div>
+            <div class="info">5. You'll get points on the basis of your correct answers.</div>
+        </div>
+        <div class="buttons">
+            <button class="quit">Exit Quiz</button>
+            <button class="restart">Continue</button>
+        </div>
+    </div>
 
-<div class="row">
-<br><br><br><br>
-
-    <div id="slider-frame">
-        <div id="slider">
-
-<!-- quiz intro (question 0)  -->
-
-        <div class="panel">
-          <div class="title-stuff">
-             <h1>Quiz on Stuff You Should Know</h1>
-            <br>
-             <p>18 Questions</p>
-             <p>For each question, select or type in the right answer(s). Click "Confirm" to submit your final answer.</p>
-             <br>
-             <div class="begin slideshow-next">Begin</div>
-          </div><!-- end title-stuff -->
-
-        </div><!-- end panel -->
-
-
-
-       
-
-
-<!-- select multiple -->
-
-        <div class="panel select-multiple astr">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2 style="margin-bottom: 10px;">Select the four gas giants.</h2>  <!-- inline style for video only -->
+    <!-- Quiz Box -->
+    <div class="quiz_box">
+        <header>
+            <div class="title">Awesome Quiz Application</div>
+            <div class="timer">
+                <div class="time_left_txt">Time Left</div>
+                <div class="timer_sec">15</div>
             </div>
-
-            <div class="panel-answer">
-                 <button class="answer-multiple">
-                    Mercury
-                 </button>
-                 <button class="answer-multiple correct">
-                    Saturn
-                 </button>
-                 <button class="answer-multiple correct">
-                    Uranus
-                 </button>
-                 <button class="answer-multiple correct">
-                    Neptune
-                 </button>
-                <button class="answer-multiple">
-                    Earth
-                 </button>
-                <button class="answer-multiple correct">
-                    Jupiter
-                 </button>
-            </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Correct!
-         </div>
-         <div class="fb partial-answer">
-             Close. Jupiter, Saturn, Uranus and Neptune are the gas giants.
-         </div>
-         <div class="fb wrong-answer">
-             Nope, way off. Jupiter, Saturn, Uranus and Neptune are the gas giants.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-             <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-        </div><!-- end panel -->
-
-
-<!-- order words -->
-
-        <div class="panel order-words math">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>Drag the roman numerals to the correct order.</h2>
-            </div><br>
-
-                <div class="panel-answer">
-                  <ul class="order-words-ul">
-                    <li class="orderword4">XII</li>
-                    <li class="orderword1">III</li>
-                    <li class="orderword5">XX</li>
-                    <li class="orderword2">V</li>
-                    <li class="orderword3">IX</li>
-                    <li class="orderword6">M</li>
-                  </ul>
-                </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Correct!
-         </div>
-         <div class="fb partial-answer">
-             Close but not quite.
-         </div>
-         <div class="fb wrong-answer">
-             No, not quite.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-              <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-         </div><!-- end panel -->
+            <div class="time_line"></div>
+        </header>
+        <section>
+            <div class="que_text">
           
+            </div>
+            <div class="option_list">
+        
+            </div>
+        </section>
+
+      
+        <footer>
+            <div class="total_que">
+              
+            </div>
+            <button class="next_btn">Next Que</button>
+        </footer>
+    </div>
+
+    <!-- Result Box -->
+    <div class="result_box">
+        <div class="icon">
+            <i class="fas fa-crown"></i>
+        </div>
+        <div class="complete_text">You've completed the Quiz!</div>
+        <div class="score_text">
           
-<!-- annotate -->
-
-        <div class="panel annotate">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>Label the seasons.</h2>
-            </div>
-
-                <div class="panel-answer">
-                    <img class="annotate-img" src="http://lauraspenke.com/quiz/images/seasons.png" />
-                    <input class="fill-val-ann1" autocomplete="off"/>
-                    <input class="fill-val-ann2" autocomplete="off"/>
-                    <input class="fill-val-ann3" autocomplete="off"/>
-                    <input class="fill-val-ann4" autocomplete="off"/>
-                </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Correct! You know your seasons.
-         </div>
-         <div class="fb partial-answer">
-             Close but not quite.
-         </div>
-         <div class="fb wrong-answer">
-             Incorrect.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-             <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-        </div><!-- end panel -->
-         
-
-         <!-- fill blanks random -->
-
-        <div class="panel fill-blanks-random geog">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>Name the three northernmost countries.</h2>
-            </div>
-
-                <div class="panel-answer">
-                    <input class="fill-val-ran1" autocomplete="off"/>
-                </div>
-                <div class="panel-answer">
-                    <input class="fill-val-ran2" autocomplete="off"/>
-                </div>
-                <div class="panel-answer">
-                    <input class="fill-val-ran3" autocomplete="off"/>
-                </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Correct!
-         </div>
-             <div class="fb partial-answer">
-             Close but not quite. Canada, Greenland and Russia are the three northernmost countries.
-         </div>
-         <div class="fb wrong-answer">
-             Incorrect. Canada, Greenland and Russia are the three northernmost countries.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-             <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-        </div><!-- end panel -->
-
-
-<!-- select-one -->
-
-        <div class="panel select-one math">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>A dodecahedron has 10 sides.</h2>
-            </div><br>
-
-            <div class="panel-answer one-box">
-                <button class="viewer-answer-one correct">
-                    true
-                </button>
-                <button class="viewer-answer-one">
-                    false
-                </button>
-            </div>
-
-         </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Correct!
-         </div>
-         <div class="fb wrong-answer">
-             No, a dodecahedron has 10 sides.
-         </div>
-         <div class="bottom">
-             <div class="panel-weight">1 point</div>
-             <div class="confirm">Confirm</div>
-             <div class="next slideshow-next">Next</div>
-         </div>
-    </div><!-- end panel -->
-
-
-<!-- match words -->
-
-        <div class="panel match-words math">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>Drag the words on the right to match the words on the left.</h2>
-            </div><br>
-
-              <div class="match-words-box">
-                <div class="panel-answer">
-                   <ul class="match-words-col1">
-                    <li class="word1">4</li>
-                    <li class="word2">6</li>
-                    <li class="word3">8</li>
-                    </ul>
-                </div>
-                <div class="panel-answer">
-                   <ul class="match-words-col2">
-                    <li class="word2">hexagon</li>
-                    <li class="word3">octagon</li>
-                    <li class="word1">square</li>
-                   </ul>
-                </div>
-
-              </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Correct!
-         </div>
-         <div class="fb partial-answer">
-             Close but not quite.
-         </div>
-         <div class="fb wrong-answer">
-             Nope.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-             <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-         </div><!-- end panel -->
-
-
-<!-- fill blanks order -->
-
-        <div class="panel fill-blanks-order astr">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>The first three planets from the sun in order are <input class="fill-val1" size="10" autocomplete="off"/>, <input class="fill-val2" size="10" autocomplete="off"/> and
-                    <input class="fill-val3" size="10" autocomplete="off"/>.</h2>
-            </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Correct!
-         </div>
-             <div class="fb partial-answer">
-             Not quite. Mercury, Venus and Earth are the three closest planets, respectively.
-         </div>
-         <div class="fb wrong-answer">
-             Incorrect. Mercury, Venus and Earth are the three closest planets, respectively.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-             <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-        </div><!-- end panel -->
-
-
-<!-- match images -->
-
-        <div class="panel match-images astr">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>Drag the images on the bottom to match the images above.</h2>
-            </div>
-
-             <div class="match-img-box">
-                <div class="panel-answer match-img-row1">
-                    <img class="img1" src="http://lauraspenke.com/quiz/images/earth.jpg" />
-                    <img class="img2" src="http://lauraspenke.com/quiz/images/jupiter.jpg" />
-                    <img class="img3" src="http://lauraspenke.com/quiz/images/mars.jpg" />
-                </div>
-                <div class="panel-answer match-img-row2">
-                    <img class="img3" src="http://lauraspenke.com/quiz/images/symbol-jupiter.jpg" />
-                    <img class="img1" src="http://lauraspenke.com/quiz/images/symbol-mars.jpg" />
-                    <img class="img2" src="http://lauraspenke.com/quiz/images/symbol-earth.jpg" />
-                </div>
-             </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Correct!
-         </div>
-         <div class="fb partial-answer">
-             Almost.
-         </div>
-         <div class="fb wrong-answer">
-             No, not quite.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-             <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-         </div><!-- end panel -->
-
-
-<!-- order pictures -->
-
-        <div class="panel order-pictures astr">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>Put the phases of the moon in the correct order by dragging.</h2>
-            </div><br>
-
-                <div class="panel-answer order-pics">
-
-                    <img class="orderpic4" src="http://lauraspenke.com/quiz/images/phase4.jpg" />
-                    <img class="orderpic1" src="http://lauraspenke.com/quiz/images/phase1.jpg" />
-                    <img class="orderpic3" src="http://lauraspenke.com/quiz/images/phase3.jpg" />
-                    <img class="orderpic2" src="http://lauraspenke.com/quiz/images/phase2.jpg" />
-                </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Correct!
-         </div>
-         <div class="fb partial-answer">
-             Close but not quite.
-         </div>
-         <div class="fb wrong-answer">
-             Incorrect.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-              <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-         </div><!-- end panel -->
-
-<!-- short answer -->
-
-        <div class="panel short-answer astr">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>What is the largest planet in our solar system?</h2>
-            </div><br>
-
-                <div class="panel-answer">
-                    <input class="short-val" autocomplete="off"/>
-                </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Correct!
-         </div>
-         <div class="fb wrong-answer">
-             No, the largest planet in our solar system is Jupiter.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-             <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-        </div><!-- end panel -->
-
-
-<!-- words to pictures -->
-
-        <div class="panel words-to-pictures biol">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>Drag the words to match the images above.</h2>
-            </div><br>
-              <div class="match-words-pics">
-                <div class="panel-answer match-wordpic-row1">
-                    <img class="wordpic1" src="http://lauraspenke.com/quiz/images/frog-golden.jpg" />
-                    <img class="wordpic2" src="http://lauraspenke.com/quiz/images/frog-glass.jpg" />
-                    <img class="wordpic3" src="http://lauraspenke.com/quiz/images/frog-tree.jpg" />
-                </div>
-                <div class="panel-answer match-wordpic-row2">
-                      <p class="wordpic2">glass frog</p>
-                      <p class="wordpic1">golden frog</p>
-                      <p class="wordpic3">tree frog</p>
-                </div>
-            </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Wonderful!
-         </div>
-         <div class="fb partial-answer">
-             Close but not exactly.
-         </div>
-         <div class="fb wrong-answer">
-             Not quite.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-             <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-         </div><!-- end panel -->
-
-<!-- upload image -->
-
-<div class="panel upload-image biol">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>Upload a picture by dragging it to this box. (You will get credit for this one regardless. Shhh.)</h2>
-            </div>
- <div class="panel-answer">
-              <div id="holder"></div>
-              <p id="upload" class="hidden"><label>Drag & drop not supported, but you can still upload via this input field:<br><input type="file"></label></p>
-              <p id="filereader">File API & FileReader API not supported</p>
-              <p id="formdata">XHR2's FormData is not supported</p>
-              <p id="progress">XHR2's upload progress isn't supported</p>
-              <!--<p>Upload progress: <progress id="uploadprogress" min="0" max="100" value="0">0</progress></p>-->
-</div>
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Perfect!
-         </div>
-
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-              <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-         </div><!-- end panel -->
-
-<!-- label-images -->
-
-        <div class="panel label-images geog">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>Label the continent.</h2>
-                <br>
-            </div>
-              <div class="label-img-box">
-                <div class="panel-answer label-img">
-                <img src="http://lauraspenke.com/quiz/images/africa.jpg" />
-                    <input class="fill-val-label1" autocomplete="off"/>
-                    </div>
-                <div class="panel-answer label-img">
-                <img src="http://lauraspenke.com/quiz/images/asia.jpg" />
-                    <input class="fill-val-label2" autocomplete="off"/>
-                    </div>
-                <div class="panel-answer label-img">
-                <img src="http://lauraspenke.com/quiz/images/europe.jpg" />
-                    <input class="fill-val-label3" autocomplete="off"/>
-                </div>
-                  <div class="clearfix"></div>
-              </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Correct!
-         </div>
-         <div class="fb partial-answer">
-             Close, but not exactly.
-         </div>
-         <div class="fb wrong-answer">
-             Incorrect.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-             <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-        </div><!-- end panel -->
-
-
-<!-- classify words -->
-
-        <div class="panel classify-words biol">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>Put the words in the appropriate column.</h2>
-            </div>
-
-            <div class="panel-answer">
-
-
-            <ul class="class-words-col1">
-                <div class="col-title-words">Birds</div>
-            </ul>
-
-
-            <ul class="class-words-col2">
-                <div class="col-title-words">Snakes</div>
-            </ul>
-
-            <br><br><br><br><br><br><br>
-                <hr>
-                <br>
-
-            <ul class="word-pool">
-
-            <li class="class1">robin</li>
-            <li>asp</li>
-            <li class="class1">dove</li>
-            <li>copperhead</li>
-            <li class="class1">penguin</li>
-            <li>canebrake</li>
-            <li>cobra</li>
-            <li class="class1">flycatcher</li>
-
-            </ul>
-
-             </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             All right!
-         </div>
-             <div class="fb partial-answer">
-             Almost.
-         </div>
-         <div class="fb wrong-answer">
-             None of these were right.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-              <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-         </div><!-- end panel -->
-
-<!-- table -->
-
-        <div class="panel table math">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>A x B = C</h2>
-            </div>
-
-                <div class="panel-answer">
-                    <table>
-                        <thead>
-                        <th>A</th>
-                        <th>B</th>
-                        <th>C</th>
-                        </thead>
-                      <tr>
-                        <td>2</td>
-                        <td>7</td>
-                        <td><input class="fill-val-tab1" size="12" autocomplete="off"/></td>
-                      </tr>
-                      <tr>
-                        <td><input class="fill-val-tab2" size="12" autocomplete="off"/></td>
-                        <td>4</td>
-                        <td>20</td>
-                      </tr>
-                      <tr>
-                        <td>3</td>
-                        <td><input class="fill-val-tab3" size="12" autocomplete="off"/></td>
-                        <td>18</td>
-                      </tr>
-                    </table>
-                </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Correct!
-         </div>
-          <div class="fb partial-answer">
-             Close but not exactly.
-         </div>
-         <div class="fb wrong-answer">
-             Nope.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-             <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-        </div><!-- end panel -->
-
-
-<!-- select picture -->
-
-        <div class="panel select-picture biol">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>Select the reptile.</h2>
-            </div><br>
-
-                <div class="panel-answer select-pics">
-                    <img src="http://lauraspenke.com/quiz/images/frog.png" />
-                    <img class="correct" src="http://lauraspenke.com/quiz/images/snake.png" />
-                    <img src="http://lauraspenke.com/quiz/images/butterfly.png" />
-                    <img src="http://lauraspenke.com/quiz/images/owl.png" />
-                    <img src="http://lauraspenke.com/quiz/images/moose.png" />
-                </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             Congrats!
-         </div>
-         <div class="fb wrong-answer">
-             No, not quite.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-              <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-         </div><!-- end panel -->
-
-
-<!-- classify pics -->
-
-<div class="panel classify-pics geog">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>Put the pictures in the appropriate column.</h2>
-            </div>
-
-            <div class="panel-answer">
-                  <ul class="class-pics-col1">
-                    <div class="col-title-pics">Landmarks</div>
-                  </ul>
-
-
-                  <ul class="class-pics-col2">
-                    <div class="col-title-pics">Continents</div>
-                  </ul>
-
-                <br><br><br><br><br><br><br>
-                <hr>
-                <br>
-
-              <ul class="pic-pool">
-                <li class="class1"><img src="http://lauraspenke.com/quiz/images/cristoredentor.png" /></li>
-                <li class="class1"><img src="http://lauraspenke.com/quiz/images/pyramids.png" /></li>
-                <li><img src="http://lauraspenke.com/quiz/images/southamerica.png" /></li>
-                <li><img src="http://lauraspenke.com/quiz/images/europe.png" /></li>
-                <li class="class1"><img src="http://lauraspenke.com/quiz/images/eiffel.png" /></li>
-                <li><img src="http://lauraspenke.com/quiz/images/africa.png" /></li>
-              </ul>
-            </div>
-
-          </div><!-- end panel-stuff -->
-         <div class="fb right-answer">
-             All right!
-         </div>
-             <div class="fb partial-answer">
-             Close but missing a few.
-         </div>
-         <div class="fb wrong-answer">
-             None of these were right.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-              <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-         </div><!-- end panel -->
-
-
- <!-- long-answer -->
-
-<!--         <div class="panel long-answer astr">
-         <div class="panel-stuff">
-            <div class="panel-question">
-                <h2>What happens when two galaxies collide?</h2>
-            </div><br>
-
-                <div class="panel-answer">
-                    <textarea class="long-val" rows="5"></textarea>
-                </div>
-
-          </div> --><!-- end panel-stuff -->
-<!--          <div class="fb right-answer">
-             Correct! The sun's light reflects off the Earth and Moon, but stars give off their own light.
-         </div>
-         <div class="fb wrong-answer">
-             No, not so much.
-         </div>
-         <div class="bottom">
-              <div class="panel-weight">1 point</div>
-             <div class="confirm">Confirm</div>
-              <div class="next slideshow-next">Next</div>
-         </div>
-        </div> --><!-- end panel -->
-
-
-<!-- score -->
-
-        <div class="panel score">
-         <div class="panel-stuff">
-            <div class="panel-question">
-             
-            </div>
-
-
-          </div><!-- end panel-stuff -->
-
-        </div><!-- end panel -->
-
-
-        </div><!-- end slider -->
-</div><!-- end slider-frame -->
-<br><br><br><br><br><br>
-  </div><!-- end row -->
-<!-- </div> --> <!-- end page-content -->
-</div><!--end blackcontent-->
-  <script>
-        //a panel width in pixels
-        var panelWidth = 610;
-
-        var score = 0;
-
-        function rightAnswer() {
-            $('.panel-stuff').hide();
-            $('.confirm').hide();
-            $('.right-answer').show();
-            $('.next').show();
-            score++;
-        }
-
-        function wrongAnswer() {
-            $('.panel-stuff').hide();
-            $('.confirm').hide();
-            $('.wrong-answer').show();
-            $('.next').show();
-        }
-
-        function partialAnswer() {
-            $('.panel-stuff').hide();
-            $('.confirm').hide();
-            $('.partial-answer').show();
-            $('.next').show();
-        }
-
-        function greatScore(){
-            $('.panel-question').append('<h3>Congrats! Perfect score!</h3>');
-        }
-
-        function goodScore() {
-            $('.panel-question').append('<h3>Not bad! You know your stuff.</h3>');
-        }
-
-        function badScore() {
-            $('.panel-question').append('<h4>Sorry, this is not a passing score. Maybe read some more or something.</h4>');
-        }
-
-        //DOM and all content is loaded
-        $('html').addClass('js');
-        $(window).ready(function() {
-            $('.fb').hide();
-            $('.next').hide();
-
-            var $panels = $(".panel").hide(),
-                panCount = 0;
-
-            $panels.eq(panCount).show();
-
-        // show next panel
-        $('.slideshow-next').click(function () {
-          $panels.eq(panCount).hide();
-          panCount = (panCount+1) % $panels.length;
-            var curQues = $panels.eq(panCount);
-            curQues.show();
-            var quesType = curQues.attr('class').split(' ')[1];
-            console.log(quesType);
-            switch (quesType) {
-
-                case 'select-one':
-                  $(curQues).find('.viewer-answer-one').mouseup(function () {
-                    $(this).addClass('highlight').siblings().removeClass('highlight');
-                  });
-                  $(curQues).find('.confirm').on('click', function () {
-                    var isCorrect = $('.correct').hasClass('highlight');
-                    if (isCorrect == true) {
-                    rightAnswer();
-                    } else {
-                    wrongAnswer();
-                    }
-                  });
-                    break;  //works
-                
-                
-                 case 'annotate':
-                    $(curQues).find('.confirm').on('click', function () {
-                    var rightAns1 = "SUMMER";
-                    var rightAns2 = "WINTER";
-                    var rightAns3 = "FALL";
-                    var rightAns33 = "AUTUMN";
-                    var rightAns4 = "SPRING";
-                    var isCorrect1 = $('.fill-val-ann1').val().toUpperCase();
-                    var isCorrect2 = $('.fill-val-ann2').val().toUpperCase();
-                    var isCorrect3 = $('.fill-val-ann3').val().toUpperCase();
-                    var isCorrect4 = $('.fill-val-ann4').val().toUpperCase();
-                    if (isCorrect1 == rightAns1 && isCorrect2 == rightAns2 && isCorrect3 == rightAns3 || rightAns33 && isCorrect4 == rightAns4) {
-                    rightAnswer();
-                    } else if ((isCorrect1 == rightAns1) || (isCorrect2 == rightAns2) || (isCorrect3 == rightAns3) || (isCorrect4 == rightAns4)) {
-                    partialAnswer();
-                    } else {
-                    wrongAnswer();
-                    }
-                  });
-                    break;   //works
-
-                
-                case 'select-multiple':
-                  $(curQues).find('.answer-multiple').mouseup(function () {
-                    $(this).toggleClass('highlight-multiple');
-                  });
-                  var rightAns = $(curQues).find('.answer-multiple.correct').length;
-
-                  $(curQues).find('.confirm').on('click', function () {
-                    var selectedRightAns = $(curQues).find('.answer-multiple.correct.highlight-multiple').length;
-                      console.log('C');
-                    if (rightAns == selectedRightAns) {
-                    rightAnswer();
-                    } else if (selectedRightAns == 0) {
-                    wrongAnswer();
-                    } else {
-                    partialAnswer();
-                    }
-                  });
-                    break;  //works
-
-                case 'fill-blanks-order':
-                    $(curQues).find('.confirm').on('click', function () {
-                    var rightAns1 = "MERCURY";
-                    var rightAns2 = "VENUS";
-                    var rightAns3 = "EARTH";
-                    var isCorrect1 = $('.fill-val1').val().toUpperCase();
-                    var isCorrect2 = $('.fill-val2').val().toUpperCase();
-                    var isCorrect3 = $('.fill-val3').val().toUpperCase();
-                    if (isCorrect1 == rightAns1 && isCorrect2 == rightAns2 && isCorrect3 == rightAns3) {
-                    rightAnswer();
-                    } else if ((isCorrect1 == rightAns1) || (isCorrect2 == rightAns2) || (isCorrect3 == rightAns3)) {
-                    partialAnswer();
-                    } else {
-                    wrongAnswer();
-                    }
-                  });
-                    break;   //works
-
-                  case 'fill-blanks-random':
-                    $(curQues).find('.confirm').on('click', function () {
-                    var rightAns1 = "GREENLAND";
-                    var rightAns2 = "CANADA";
-                    var rightAns3 = "RUSSIA";
-                    var isCorrect1 = $('.fill-val-ran1').val().toUpperCase();
-                    var isCorrect2 = $('.fill-val-ran2').val().toUpperCase();
-                    var isCorrect3 = $('.fill-val-ran3').val().toUpperCase();
-
-                    if (((isCorrect1 == rightAns1) || (isCorrect1 == rightAns2) || (isCorrect1 == rightAns3)) && 
-                        ((isCorrect2 == rightAns1) || (isCorrect2 == rightAns2) || (isCorrect2 == rightAns3)) && (isCorrect2 !== isCorrect1) &&
-                         ((isCorrect3 == rightAns1) || (isCorrect3 == rightAns2) || (isCorrect3 == rightAns3)) && (isCorrect3 !== isCorrect1) &&
-                          (isCorrect3 !== isCorrect2)) {
-                    rightAnswer();
-                    } else if (((isCorrect1 == rightAns1) || (isCorrect1 == rightAns2) || (isCorrect1 == rightAns3)) || 
-                               ((isCorrect2 == rightAns1) || (isCorrect2 == rightAns2) || (isCorrect2 == rightAns3)) ||
-                                ((isCorrect3 == rightAns1) || (isCorrect3 == rightAns2) || (isCorrect3 == rightAns3))) {
-                    partialAnswer();
-                    } else {
-                    wrongAnswer();
-                    }
-                  });
-                    break;   //works
-
-                case 'short-answer':
-                    $(curQues).find('.confirm').on('click', function () {
-                    var rightAns = "JUPITER";
-                    var isCorrect = $('.short-val').val().toUpperCase();
-                    if (isCorrect == rightAns) {
-                    rightAnswer();
-                    } else {
-                    wrongAnswer();
-                    }
-                  });
-                    break;   //works
-
-                case 'long-answer':
-                    $(curQues).find('.confirm').on('click', function () {
-                    var rightAns = "Jupiter";
-                    var isCorrect = $('.short-val').val();
-                    if (isCorrect == rightAns) {
-                    rightAnswer();
-                    } else {
-                    wrongAnswer();
-                    }
-                  });
-                    break;   // has nothing - needs function to send to teacher
-
-                case 'table':
-                    $(curQues).find('.confirm').on('click', function () {
-                    var rightAns1 = "14";
-                    var rightAns2 = "5";
-                    var rightAns3 = "6";
-                    var isCorrect1 = $('.fill-val-tab1').val();
-                    var isCorrect2 = $('.fill-val-tab2').val();
-                    var isCorrect3 = $('.fill-val-tab3').val();
-                    if (isCorrect1 == rightAns1 && isCorrect2 == rightAns2 && isCorrect3 == rightAns3) {
-                    rightAnswer();
-                    } else if ((isCorrect1 == rightAns1) || (isCorrect2 == rightAns2) || (isCorrect3 == rightAns3)) {
-                    partialAnswer();
-                    } else {
-                    wrongAnswer();
-                    }
-                  });
-                    break;   //works
-
-                case 'label-images':
-                    $(curQues).find('.confirm').on('click', function () {
-                    var rightAns1 = "AFRICA";
-                    var rightAns2 = "ASIA";
-                    var rightAns3 = "EUROPE";
-                    var isCorrect1 = $('.fill-val-label1').val().toUpperCase();
-                    var isCorrect2 = $('.fill-val-label2').val().toUpperCase();
-                    var isCorrect3 = $('.fill-val-label3').val().toUpperCase();
-                    if (isCorrect1 == rightAns1 && isCorrect2 == rightAns2 && isCorrect3 == rightAns3) {
-                    rightAnswer();
-                    } else if ((isCorrect1 == rightAns1) || (isCorrect2 == rightAns2) || (isCorrect3 == rightAns3)) {
-                    partialAnswer();
-                    } else {
-                    wrongAnswer();
-                    }
-                  });
-                    break;   //works
-
-                
-
-                case 'match-words':
-                    $('.match-words-col2').sortable({ items: "> li",
-                            connectWith: ".match-words-col2",
-                            axis: 'y',
-                            cancel: '',
-                            opacity: 0.5,
-                            tolerance: 'pointer',
-                            containment: 'window'
-                    });
-
-                    $(curQues).find('.confirm').on('click', function () {
-                        var staticUl = $('ul.match-words-col1');
-                        var staticWord1 = staticUl.children().eq(0);
-                        var staticWord2 = staticUl.children().eq(1);
-                        var staticWord3 = staticUl.children().eq(2);
-
-                        var fluidUl = $('ul.match-words-col2');
-                        var fluidWord1 = fluidUl.children().eq(0);
-                        var fluidWord2 = fluidUl.children().eq(1);
-                        var fluidWord3 = fluidUl.children().eq(2);
-
-                        if (((staticWord1 && fluidWord1).hasClass('word1')) && ((staticWord2 && fluidWord2).hasClass('word2'))
-                            && ((staticWord3 && fluidWord3).hasClass('word3'))) {
-                            rightAnswer();
-                        } else if (((staticWord1 && fluidWord1).hasClass('word1')) || ((staticWord2 && fluidWord2).hasClass('word2'))
-                            || ((staticWord3 && fluidWord3).hasClass('word3'))) {
-                            partialAnswer();
-                        } else {
-                            wrongAnswer();
-                        }
-                    });
-                    break;   //works
-
-                case 'match-images':
-                        $('.match-img-row2').sortable({ items: "> img",
-                            connectWith: ".match-img-row2",
-                            appendTo: ".match-img-row2",
-                            helper: 'clone',
-                            axis: 'x',
-                            cancel: '',
-                            opacity: 0.5,
-                            tolerance: 'pointer',
-                            containment: 'window'
-                    });
-
-                    $(curQues).find('.confirm').on('click', function () {
-                        var staticDiv = $('div.match-img-row1');
-                        var staticImg1 = staticDiv.children().eq(0);
-                        var staticImg2 = staticDiv.children().eq(1);
-                        var staticImg3 = staticDiv.children().eq(2);
-
-                        var fluidDiv = $('div.match-img-row2');
-                        var fluidImg1 = fluidDiv.children().eq(0);
-                        var fluidImg2 = fluidDiv.children().eq(1);
-                        var fluidImg3 = fluidDiv.children().eq(2);
-
-                        if (((staticImg1 && fluidImg1).hasClass('img1')) && ((staticImg2 && fluidImg2).hasClass('img2'))
-                            && ((staticImg3 && fluidImg3).hasClass('img3'))) {
-                            rightAnswer();
-                        } else if (((staticImg1 && fluidImg1).hasClass('img1')) || ((staticImg2 && fluidImg2).hasClass('img2'))
-                            || ((staticImg3 && fluidImg3).hasClass('img3'))) {
-                            partialAnswer();
-                        } else {
-                            wrongAnswer();
-                        }
-                    });
-                    break;   //works
-
-                case 'words-to-pictures':
-                     $('.match-wordpic-row2').sortable({ items: "> p",
-                            connectWith: ".match-wordpic-row2",
-                            axis: 'x',
-                            cancel: '',
-                            opacity: 0.5,
-                            tolerance: 'pointer',
-                            containment: 'window'
-                    });
-
-                    $(curQues).find('.confirm').on('click', function () {
-                        var staticDiv = $('div.match-wordpic-row1');
-                        var staticImg1 = staticDiv.children().eq(0);
-                        var staticImg2 = staticDiv.children().eq(1);
-                        var staticImg3 = staticDiv.children().eq(2);
-
-                        var fluidDiv = $('ul.match-wordpic-row2');
-                        var fluidImg1 = fluidDiv.children().eq(0);
-                        var fluidImg2 = fluidDiv.children().eq(1);
-                        var fluidImg3 = fluidDiv.children().eq(2);
-
-                        if (((staticImg1 && fluidImg1).hasClass('wordpic1')) && ((staticImg2 && fluidImg2).hasClass('wordpic2'))
-                            && ((staticImg3 && fluidImg3).hasClass('wordpic3'))) {
-                            rightAnswer();
-                        } else if (((staticImg1 && fluidImg1).hasClass('wordpic1')) || ((staticImg2 && fluidImg2).hasClass('wordpic2'))
-                            || ((staticImg3 && fluidImg3).hasClass('wordpic3'))) {
-                            partialAnswer();
-                        } else {
-                            wrongAnswer();
-                        }
-                    });
-                    break;   //works
-
-                case 'order-words':
-                     $('.order-words-ul').sortable({ items: "> li",
-                            connectWith: ".order-words-ul",
-                            axis: 'x',
-                            cancel: '',
-                            opacity: 0.5,
-                            tolerance: 'pointer',
-                            containment: 'window'
-                    });
-
-                    $(curQues).find('.confirm').on('click', function () {
-                        var li1 = $('.orderword1').index();
-                        var li2 = $('.orderword2').index();
-                        var li3 = $('.orderword3').index();
-                        var li4 = $('.orderword4').index();
-                        var li5 = $('.orderword5').index();
-                        var li6 = $('.orderword6').index();
-
-                        if ((li1 == 0) && (li2 == 1) && (li3 == 2) && (li4 == 3) && (li5 == 4) && (li6 == 5)) {
-                            rightAnswer();
-                        } else if  ((li1 == 0) || (li2 == 1) || (li3 == 2) || (li4 == 3) || (li5 == 4) || (li6 == 6)) {
-                            partialAnswer();
-                        } else {
-                            wrongAnswer();
-                        }
-                  });
-                    break;   //works
-
-                case 'order-pictures':
-                     $('.order-pics').sortable({
-                            items: "> img",
-                            connectWith: ".order-pics",
-                            appendTo: '.order-pics',
-                            axis: 'x',
-                            helper: 'clone',
-                            cancel: '',
-                            opacity: 0.5,
-                            tolerance: 'pointer',
-                            containment: 'window'
-                    });
-
-                    $(curQues).find('.confirm').on('click', function () {
-                        var li1 = $('.orderpic1').index();
-                        var li2 = $('.orderpic2').index();
-                        var li3 = $('.orderpic3').index();
-                        var li4 = $('.orderpic4').index();
-
-                        if ((li1 == 0) && (li2 == 1) && (li3 == 2) && (li4 == 3)) {
-                            rightAnswer();
-                        } else if  ((li1 == 0) || (li2 == 1) || (li3 == 2) || (li4 == 3)) {
-                            partialAnswer();
-                        } else {
-                            wrongAnswer();
-                        }
-                  });
-                    break;   //works
-
-                case 'select-picture':
-                  $(curQues).find('.select-pics img').on('click', function () {
-                    $(this).addClass('high-pic').siblings().removeClass('high-pic');
-                  });
-                  $(curQues).find('.confirm').on('click', function () {
-                    var isCorrect = $('.correct').hasClass('high-pic');
-                    if (isCorrect == true) {
-                            rightAnswer();
-                    } else {
-                            wrongAnswer();
-                    }
-                  });
-                    break;  //works
-
-                case 'classify-words':
-                    var col1 = $('.class-words-col1');
-                    var col2 = $('.class-words-col2');
-                    var col3 = $('.word-pool');
-
-                    col1.sortable({ items: "> li",
-                            connectWith: ('.class-words-col2, .word-pool'),
-                            axis: '',
-                            cancel: '',
-                            opacity: 0.5,
-                            tolerance: 'pointer',
-                            containment: 'window'
-                    });
-
-                    col2.sortable({ items: "> li",
-                            connectWith: ('.class-words-col1, .word-pool'),
-                            axis: '',
-                            cancel: '',
-                            opacity: 0.5,
-                            tolerance: 'pointer',
-                            containment: 'window'
-                    });
-
-                    col3.sortable({ items: "> li",
-                            connectWith: ('.class-words-col1, .class-words-col2'),
-                            axis: '',
-                            cancel: '',
-                            opacity: 0.5,
-                            tolerance: 'pointer',
-                            containment: 'window'
-                    });
-
-                    $(curQues).find('.confirm').on('click', function () {
-
-                    var listItems1 = col1.find('.class1');
-                    var listItems2 = col2.find('.class1');
-                    var listItems3 = col3.find('li');
-
-                    if ((listItems2.length == 0) && ((listItems3).length == 0)) {
-                            rightAnswer();
-                    } else if ((listItems1.length == 0) && ((listItems3).length == 0)) {
-                            wrongAnswer();
-                    } else {
-                            partialAnswer();
-                    }
-
-                    });
-
-                    break;   //works
-
-                case 'classify-pics':
-                      var col1 = $('.class-pics-col1');
-                      var col2 = $('.class-pics-col2');
-                      var col3 = $('.pic-pool');
-
-                    col1.sortable({ items: "> li",
-                            connectWith: ('.class-pics-col2, .pic-pool'),
-                            axis: '',
-                            cancel: '',
-                            opacity: 0.5,
-                            tolerance: 'pointer',
-                            containment: 'window'
-                    });
-
-                    col2.sortable({ items: "> li",
-                            connectWith: ('.class-pics-col1, .pic-pool'),
-                            axis: '',
-                            cancel: '',
-                            opacity: 0.5,
-                            tolerance: 'pointer',
-                            containment: 'window'
-                    });
-
-                    col3.sortable({ items: "> li",
-                            connectWith: ('.class-pics-col1, .class-pics-col2'),
-                            axis: '',
-                            cancel: '',
-                            opacity: 0.5,
-                            tolerance: 'pointer',
-                            containment: 'window'
-                    });
-
-                    $(curQues).find('.confirm').on('click', function () {
-
-                    var listItems1 = col1.find('.class1');
-                    var listItems2 = col2.find('.class1');
-                    var listItems3 = col3.find('li');
-
-                    if ((listItems2.length == 0) && ((listItems3).length == 0)) {
-                            rightAnswer();
-                    } else if ((listItems1.length == 0) && ((listItems3).length == 0)) {
-                            wrongAnswer();
-                    } else {
-                            partialAnswer();
-                    }
-
-                    });
-                    break;   //works
-
-
-
-                case 'upload-image':
-
-                    var holder = document.getElementById('holder'),
-                    tests = {
-                      filereader: typeof FileReader != 'undefined',
-                      dnd: 'draggable' in document.createElement('span'),
-                      formdata: !!window.FormData,
-                      progress: "upload" in new XMLHttpRequest
-                    },
-                    support = {
-                      filereader: document.getElementById('filereader'),
-                      formdata: document.getElementById('formdata'),
-                      progress: document.getElementById('progress')
-                    },
-                    acceptedTypes = {
-                      'image/png': true,
-                      'image/jpeg': true,
-                      'image/gif': true
-                    },
-                    progress = document.getElementById('uploadprogress'),
-                    fileupload = document.getElementById('upload');
-
-                    "filereader formdata progress".split(' ').forEach(function (api) {
-                      if (tests[api] === false) {
-                        support[api].className = 'fail';
-                      } else {
-                        // FFS. I could have done el.hidden = true, but IE doesn't support
-                        // hidden, so I tried to create a polyfill that would extend the
-                        // Element.prototype, but then IE10 doesn't even give me access
-                        // to the Element object. Brilliant.
-                        support[api].className = 'hidden';
-                      }
-                    });
-
-                    function previewfile(file) {
-                      if (tests.filereader === true && acceptedTypes[file.type] === true) {
-                        var reader = new FileReader();
-                        reader.onload = function (event) {
-                          var image = new Image();
-                          image.src = event.target.result;
-                         image.width = 250; // a fake resize
-                          holder.appendChild(image);
-                        };
-
-                    reader.readAsDataURL(file);
-                    }  else {
-                    holder.innerHTML += '<p>Uploaded ' + file.name + ' ' + (file.size ? (file.size/1024|0) + 'K' : '');
-                    console.log(file);
-                        }
-                    }
-
-                    function readfiles(files) {
-                    debugger;
-                    var formData = tests.formdata ? new FormData() : null;
-                    for (var i = 0; i < files.length; i++) {
-                      if (tests.formdata) formData.append('file', files[i]);
-                      previewfile(files[i]);
-                        }
-                    }
-
-                    if (tests.dnd) {
-                      holder.ondragover = function () { this.className = 'hover'; return false; };
-                      holder.ondragend = function () { this.className = ''; return false; };
-                      holder.ondrop = function (e) {
-                        this.className = '';
-                        e.preventDefault();
-                        readfiles(e.dataTransfer.files);
-                      }
-                    } else {
-                      fileupload.className = 'hidden';
-                      fileupload.querySelector('input').onchange = function () {
-                        readfiles(this.files);
-                      };
-                    }
-
-                    $(curQues).find('.confirm').on('click', function () {
-                        rightAnswer();
-                    });
-
-                    break;   //works
-
-                    case 'score':
-                      var message = 'You got ' + score + ' out of ' + ($panels.length - 1) + '.';
-            
-                      $('.panel-question').html('<h2>' + message + '</h2>');
-
-                      if (score == 18) {
-                            greatScore();
-                      } else if (score < 12) {
-                            badScore();
-                      } else {
-                            goodScore();
-                      }
-                     
-                    break;   //works
-
+        </div>
+        <div class="buttons">
+            <button class="restart">Replay Quiz</button>
+            <button class="quit">Quit Quiz</button>
+        </div>
+    </div>
+
+<script>
+    let questions = [
+    {
+    numb: 1,
+    question: "What does HTML stand for?",
+    answer: "Hyper Text Markup Language",
+    options: [
+      "Hyper Text Preprocessor",
+      "Hyper Text Markup Language",
+      "Hyper Text Multiple Language",
+      "Hyper Tool Multi Language"
+    ]
+  },
+    {
+    numb: 2,
+    question: "What does CSS stand for?",
+    answer: "Cascading Style Sheet",
+    options: [
+      "Common Style Sheet",
+      "Colorful Style Sheet",
+      "Computer Style Sheet",
+      "Cascading Style Sheet"
+    ]
+  },
+    {
+    numb: 3,
+    question: "What does PHP stand for?",
+    answer: "Hypertext Preprocessor",
+    options: [
+      "Hypertext Preprocessor",
+      "Hypertext Programming",
+      "Hypertext Preprogramming",
+      "Hometext Preprocessor"
+    ]
+  },
+    {
+    numb: 4,
+    question: "What does SQL stand for?",
+    answer: "Structured Query Language",
+    options: [
+      "Stylish Question Language",
+      "Stylesheet Query Language",
+      "Statement Question Language",
+      "Structured Query Language"
+    ]
+  },
+    {
+    numb: 5,
+    question: "What does XML stand for?",
+    answer: "eXtensible Markup Language",
+    options: [
+      "eXtensible Markup Language",
+      "eXecutable Multiple Language",
+      "eXTra Multi-Program Language",
+      "eXamine Multiple Language"
+    ]
+  },
+  
+
+     {
+     numb: 6,
+     question: "Your Question is Here",
+  
+     options: [
+       "Option 1",
+       "option 2",
+       "option 3",
+       "option 4"
+    ]
+   },
+];
+//selecting all required elements
+const start_btn = document.querySelector(".start_btn button");
+const info_box = document.querySelector(".info_box");
+const exit_btn = info_box.querySelector(".buttons .quit");
+const continue_btn = info_box.querySelector(".buttons .restart");
+const quiz_box = document.querySelector(".quiz_box");
+const result_box = document.querySelector(".result_box");
+const option_list = document.querySelector(".option_list");
+const time_line = document.querySelector("header .time_line");
+const timeText = document.querySelector(".timer .time_left_txt");
+const timeCount = document.querySelector(".timer .timer_sec");
+
+// if startQuiz button clicked
+start_btn.onclick = ()=>{
+    info_box.classList.add("activeInfo"); //show info box
+}
+
+// if exitQuiz button clicked
+exit_btn.onclick = ()=>{
+    info_box.classList.remove("activeInfo"); //hide info box
+}
+
+// if continueQuiz button clicked
+continue_btn.onclick = ()=>{
+    info_box.classList.remove("activeInfo"); //hide info box
+    quiz_box.classList.add("activeQuiz"); //show quiz box
+    showQuetions(0); //calling showQestions function
+    queCounter(1); //passing 1 parameter to queCounter
+    startTimer(15); //calling startTimer function
+    startTimerLine(0); //calling startTimerLine function
+}
+
+let timeValue =  15;
+let que_count = 0;
+let que_numb = 1;
+let userScore = 0;
+let counter;
+let counterLine;
+let widthValue = 0;
+
+const restart_quiz = result_box.querySelector(".buttons .restart");
+const quit_quiz = result_box.querySelector(".buttons .quit");
+
+// if restartQuiz button clicked
+restart_quiz.onclick = ()=>{
+    quiz_box.classList.add("activeQuiz"); //show quiz box
+    result_box.classList.remove("activeResult"); //hide result box
+    timeValue = 15; 
+    que_count = 0;
+    que_numb = 1;
+    userScore = 0;
+    widthValue = 0;
+    showQuetions(que_count); //calling showQestions function
+    queCounter(que_numb); //passing que_numb value to queCounter
+    clearInterval(counter); //clear counter
+    clearInterval(counterLine); //clear counterLine
+    startTimer(timeValue); //calling startTimer function
+    startTimerLine(widthValue); //calling startTimerLine function
+    timeText.textContent = "Time Left"; //change the text of timeText to Time Left
+    next_btn.classList.remove("show"); //hide the next button
+}
+
+// if quitQuiz button clicked
+quit_quiz.onclick = ()=>{
+    window.location.reload(); //reload the current window
+}
+
+const next_btn = document.querySelector("footer .next_btn");
+const bottom_ques_counter = document.querySelector("footer .total_que");
+
+// if Next Que button clicked
+next_btn.onclick = ()=>{
+    if(que_count < questions.length - 1){ //if question count is less than total question length
+        que_count++; //increment the que_count value
+        que_numb++; //increment the que_numb value
+        showQuetions(que_count); //calling showQestions function
+        queCounter(que_numb); //passing que_numb value to queCounter
+        clearInterval(counter); //clear counter
+        clearInterval(counterLine); //clear counterLine
+        startTimer(timeValue); //calling startTimer function
+        startTimerLine(widthValue); //calling startTimerLine function
+        timeText.textContent = "Time Left"; //change the timeText to Time Left
+        next_btn.classList.remove("show"); //hide the next button
+    }else{
+        clearInterval(counter); //clear counter
+        clearInterval(counterLine); //clear counterLine
+        showResult(); //calling showResult function
+    }
+}
+
+// getting questions and options from array
+function showQuetions(index){
+    const que_text = document.querySelector(".que_text");
+
+    //creating a new span and div tag for question and option and passing the value using array index
+    let que_tag = '<span>'+ questions[index].numb + ". " + questions[index].question +'</span>';
+    let option_tag = '<div class="option"><span>'+ questions[index].options[0] +'</span></div>'
+    + '<div class="option"><span>'+ questions[index].options[1] +'</span></div>'
+    + '<div class="option"><span>'+ questions[index].options[2] +'</span></div>'
+    + '<div class="option"><span>'+ questions[index].options[3] +'</span></div>';
+    que_text.innerHTML = que_tag; //adding new span tag inside que_tag
+    option_list.innerHTML = option_tag; //adding new div tag inside option_tag
+    
+    const option = option_list.querySelectorAll(".option");
+
+    // set onclick attribute to all available options
+    for(i=0; i < option.length; i++){
+        option[i].setAttribute("onclick", "optionSelected(this)");
+    }
+}
+// creating the new div tags which for icons
+let tickIconTag = '<div class="icon tick"><i class="fas fa-check"></i></div>';
+let crossIconTag = '<div class="icon cross"><i class="fas fa-times"></i></div>';
+
+//if user clicked on option
+function optionSelected(answer){
+    clearInterval(counter); //clear counter
+    clearInterval(counterLine); //clear counterLine
+    let userAns = answer.textContent; //getting user selected option
+    let correcAns = questions[que_count].answer; //getting correct answer from array
+    const allOptions = option_list.children.length; //getting all option items
+    
+    if(userAns == correcAns){ //if user selected option is equal to array's correct answer
+        userScore += 1; //upgrading score value with 1
+        answer.classList.add("correct"); //adding green color to correct selected option
+        answer.insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to correct selected option
+        console.log("Correct Answer");
+        console.log("Your correct answers = " + userScore);
+    }else{
+        answer.classList.add("incorrect"); //adding red color to correct selected option
+        answer.insertAdjacentHTML("beforeend", crossIconTag); //adding cross icon to correct selected option
+        console.log("Wrong Answer");
+        alert("Here is a short description.....");
+
+        for(i=0; i < allOptions; i++){
+            if(option_list.children[i].textContent == correcAns){ //if there is an option which is matched to an array answer 
+                option_list.children[i].setAttribute("class", "option correct"); //adding green color to matched option
+                option_list.children[i].insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to matched option
+                console.log("Auto selected correct answer.");
             }
-          $('.fb').hide();
-          $('.next').hide();
-          $('.panel-stuff').show();
-          $('.confirm').show();
-        });
+        }
+    }
+    for(i=0; i < allOptions; i++){
+        option_list.children[i].classList.add("disabled"); //once user select an option then disabled all options
+    }
+    next_btn.classList.add("show"); //show the next button if user selected any option
+}
 
+function showResult(){
+    info_box.classList.remove("activeInfo"); //hide info box
+    quiz_box.classList.remove("activeQuiz"); //hide quiz box
+    result_box.classList.add("activeResult"); //show result box
+    const scoreText = result_box.querySelector(".score_text");
+    if (userScore > 3){ // if user scored more than 3
+        //creating a new span tag and passing the user score number and total question number
+        let scoreTag = '<span>and congrats! 🎉, You got <p>'+ userScore +'</p> out of <p>'+ questions.length +'</p></span>';
+        scoreText.innerHTML = scoreTag;  //adding new span tag inside score_Text
+    }
+    else if(userScore > 1){ // if user scored more than 1
+        let scoreTag = '<span>and nice 😎, You got <p>'+ userScore +'</p> out of <p>'+ questions.length +'</p></span>';
+        scoreText.innerHTML = scoreTag;
+    }
+    else{ // if user scored less than 1
+        let scoreTag = '<span>and sorry 😐, You got only <p>'+ userScore +'</p> out of <p>'+ questions.length +'</p></span>';
+        scoreText.innerHTML = scoreTag;
+    }
+}
 
+function startTimer(time){
+    counter = setInterval(timer, 1000);
+    function timer(){
+        timeCount.textContent = time; //changing the value of timeCount with time value
+        time--; //decrement the time value
+        if(time < 9){ //if timer is less than 9
+            let addZero = timeCount.textContent; 
+            timeCount.textContent = "0" + addZero; //add a 0 before time value
+        }
+        if(time < 0){ //if timer is less than 0
+            clearInterval(counter); //clear counter
+            timeText.textContent = "Time Off"; //change the time text to time off
+            const allOptions = option_list.children.length; //getting all option items
+            let correcAns = questions[que_count].answer; //getting correct answer from array
+            for(i=0; i < allOptions; i++){
+                if(option_list.children[i].textContent == correcAns){ //if there is an option which is matched to an array answer
+                    option_list.children[i].setAttribute("class", "option correct"); //adding green color to matched option
+                    option_list.children[i].insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to matched option
+                    console.log("Time Off: Auto selected correct answer.");
+                }
+            }
+            for(i=0; i < allOptions; i++){
+                option_list.children[i].classList.add("disabled"); //once user select an option then disabled all options
+            }
+            next_btn.classList.add("show"); //show the next button if user selected any option
+        }
+    }
+}
 
-        // go back a panel
-//        $('.slideshow-prev').click(function () {
-//            //decrease image counter
-//            currentPanel--;
-//            //if we are at the end let set it to 0
-//            if (currentPanel < 0) currentPanel = allPanels - 1;
-//            //calcualte and set position
-//            setFramePosition(currentPanel);
-//        });
+function startTimerLine(time){
+    counterLine = setInterval(timer, 29);
+    function timer(){
+        time += 1; //upgrading time value with 1
+        time_line.style.width = time + "px"; //increasing width of time_line with px by time value
+        if(time > 549){ //if time value is greater than 549
+            clearInterval(counterLine); //clear counterLine
+        }
+    }
+}
 
-
-        });
-
-        //calculate the slideshow frame position and animate it to the new position
-        function setFramePosition(pos){
-
-            //calculate position
-            var px = panelWidth*pos*-1;
-            //set ul left position
-            $('#slider').animate({
-                left: px
-            }, 305);
-        }</script>
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="https://code.jquery.com/ui/1.11.0/jquery-ui.min.js"></script>
+function queCounter(index){
+   
+    let totalQueCounTag = '<span><p>'+ index +'</p> of <p>'+ questions.length +'</p> Questions</span>';
+    bottom_ques_counter.innerHTML = totalQueCounTag;  
+}
+    </script>
 </body>
+</html>
 </html>
