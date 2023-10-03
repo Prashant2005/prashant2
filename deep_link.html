@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Open Deep Link in Chrome</title>
+</head>
+<body>
+    <p>Click the button below to open a deep link in the Chrome browser:</p>
+    <button onclick="openInChrome()">Open in Chrome</button>
+
+    <script>
+        function openInChrome() {
+            var deepLink = "googlechrome://navigate?url=https://prashant2005.github.io";
+            window.location.href = deepLink;
+        }
+    </script>
+</body>
+</html>
