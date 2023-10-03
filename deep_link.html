@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Open Deep Link in Chrome</title>
+    <title>Open Website in Chrome</title>
 </head>
 <body>
-    <p>Click the button below to open a deep link in the Chrome browser:</p>
+    <p>Click the button below to open a website in the Chrome browser:</p>
     <button onclick="openInChrome()">Open in Chrome</button>
 
     <script>
         function openInChrome() {
-            var deepLink = "googlechrome://navigate?url=https://prashant2005.github.io";
-            window.location.href = deepLink;
+            // Check if Chrome is the user's default browser
+            var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+            
+            if (isChrome) {
+                // Replace this URL with the website you want to open
+                var websiteUrl = "https://prashant2005.github.io";
+                window.location.href = websiteUrl;
+            } else {
+                // Inform the user to use Chrome
+                alert("Please use Google Chrome to open the website.");
+            }
         }
     </script>
 </body>
